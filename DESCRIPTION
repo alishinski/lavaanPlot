@@ -1,0 +1,17 @@
+Package: lavaanPlot
+Type: Package
+Title: Path Diagrams for Lavaan Models via DiagrammeR
+Version: 0.1.0
+Author: Alex Lishinski
+Maintainer: Alex Lishinski <yourself@somewhere.net>
+Description: Plots path diagrams from models in lavaan using the plotting
+    functionality from the DiagrammeR package. DiagrammeR provides nice path diagrams 
+    via Graphviz, and these functions make it easy to generate these diagrams from a
+    lavaan path model without having to write the DOT language graph specification.
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Imports:
+    lavaan,
+    DiagrammeR
+RoxygenNote: 5.0.1
