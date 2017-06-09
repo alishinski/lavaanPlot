@@ -2,28 +2,29 @@
 % Please edit documentation in R/lavaanPlot.R
 \name{lavaanPlot}
 \alias{lavaanPlot}
-\title{Builds the Diagrammer function call.}
+\title{Plots lavaan path model with DiagrammeR}
 \usage{
-lavaanPlot(name = "plot", model, labels = NULL, graph_options, node_options,
-  edge_options)
+lavaanPlot(name = "plot", model, labels = NULL,
+  graph_options = list(overlap = "true", fontsize = "10"),
+  node_options = list(shape = "box"), edge_options = list(color = "black"))
 }
 \arguments{
 \item{name}{A string of the name of the plot.}
 
 \item{model}{A model fit object of class lavaan.}
 
-\item{labels}{An optionalnamed list of variable labels fit object of class lavaan.}
+\item{labels}{An optional named list of variable labels fit object of class lavaan.}
 
-\item{graph_options}{A named list of graph options for Diagrammer syntax.}
+\item{graph_options}{A named list of graph options for Diagrammer syntax, default provided.}
 
-\item{node_options}{A named list of node options for Diagrammer syntax.}
+\item{node_options}{A named list of node options for Diagrammer syntax, default provided.}
 
-\item{edge_options}{A named list of edge options for Diagrammer syntax..}
+\item{edge_options}{A named list of edge options for Diagrammer syntax., default provided.}
 }
 \value{
 A Diagrammer plot of the path diagram for \code{model}
 }
 \description{
-Builds the Diagrammer function call.
+Plots lavaan path model with DiagrammeR
 }
 

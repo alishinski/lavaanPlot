@@ -1,0 +1,45 @@
+---
+title: "Intro to lavaanPlot"
+author: "Alex Lishinski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+The lavaan package is an excellent package for structural equation models, and the DiagrammeR package is an excellent package for producing nice looking graph diagrams. As of right now, the lavaan package has no built in plotting functions for models, and the available options from external packages don't look as nice and aren't as easy to use as DiagrammeR, in my opinion. Of course, you can use DiagrammeR to build path diagrams for your models, but it requires you to build the diagram specification manually. This package exists to streamline that process, allowing you to plot your lavaan models directly, without having to translate them into the DOT language specification that DiagrammeR uses.
+
+## Package example
+
+The package is very straightforward to use, simply call the \code{lavaanPlot} function with your lavaan model, adding whatever graph, node and edge attributes you want as a named list (graph attributes are specified as a standard default value that shows you what the other attribute lists should look like). For your reference, the available attributes can be found here:
+
+http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#node-attributes
+http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#edge-attributes
+
+Here's a quick example using the \code{mtcars} data set. 
+
+First fit your lavaan model. Right now, only path analysis models are supported by this package, but latent variables are coming soon.
+
+```{r}
+library(lavaan)
+
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+
+fit <- sem(model, data = mtcars)
+summary(fit)
+```
+
+Then using that model fit object, simply call the \code{lavaanPlot} function, specifying your desired graph parameters.
+
+```{r}
+library(lavaanPlot)
+
+lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"))
+```
+
+And there you have it. 

@@ -44,18 +44,18 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
   string
 }
 
-#' Builds the Diagrammer function call.
+#' Plots lavaan path model with DiagrammeR
 #'
 #' @param name A string of the name of the plot.
 #' @param model A model fit object of class lavaan.
 #' @param labels  An optional named list of variable labels fit object of class lavaan.
-#' @param graph_options  A named list of graph options for Diagrammer syntax.
-#' @param node_options  A named list of node options for Diagrammer syntax.
-#' @param edge_options  A named list of edge options for Diagrammer syntax..
+#' @param graph_options  A named list of graph options for Diagrammer syntax, default provided.
+#' @param node_options  A named list of node options for Diagrammer syntax, default provided.
+#' @param edge_options  A named list of edge options for Diagrammer syntax., default provided.
 #' @return A Diagrammer plot of the path diagram for \code{model}
 #' @import DiagrammeR
 #' @export
-lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options, node_options, edge_options){
+lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black")){
   plotCall <- buildCall(name = name, model = model, labels = labels, graph_options = graph_options, node_options = node_options, edge_options = edge_options)
   grViz(plotCall)
 }
