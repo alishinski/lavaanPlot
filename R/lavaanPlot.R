@@ -1,10 +1,41 @@
-
 #' Extracts the paths from the lavaan model.
 #'
 #' @param fit A model fit object of class lavaan.
 buildPaths <- function(fit){
-  ops <- fit@ParTable$op == "~"
-  paste(paste(fit@ParTable$rhs[ops], fit@ParTable$lhs[ops], sep = "->"), collapse = " ")
+  regress <- fit@ParTable$op == "~"
+  latent <- fit@ParTable$op == "=~"
+  if(any(regress)){
+  regress_paths <- paste(paste(fit@ParTable$rhs[regress], fit@ParTable$lhs[regress], sep = "->"), collapse = " ")
+  } else {
+  regress_paths <- ""
+  }
+  if(any(latent)) {
+  latent_paths <- paste(paste(fit@ParTable$rhs[latent], fit@ParTable$lhs[latent], sep = "->"), collapse = " ")
+  } else {
+  latent_paths <- ""
+  }
+  paste(regress_paths, latent_paths, sep = " ")
+}
+
+#' Extracts the paths from the lavaan model.
+#'
+#' @param fit A model fit object of class lavaan.
+getNodes <- function(fit){
+  regress <- fit@ParTable$op == "~"
+  latent <- fit@ParTable$op == "=~"
+  observed_nodes <- c()
+  latent_nodes <- c()
+  if(any(regress)){
+    observed_nodes <- c(observed_nodes, unique(fit@ParTable$rhs[regress]))
+    observed_nodes <- c(observed_nodes, unique(fit@ParTable$lhs[regress]))
+  }
+  if(any(latent)) {
+    observed_nodes <- c(observed_nodes, unique(fit@ParTable$rhs[latent]))
+    latent_nodes <- c(latent_nodes, unique(fit@ParTable$lhs[latent]))
+  }
+  # make sure latent variables don't show up in both
+  observed_nodes <- setdiff(observed_nodes, latent_nodes)
+  list(observeds = observed_nodes, latents = latent_nodes)
 }
 
 #' Adds variable labels to the Diagrammer plot function call.
@@ -31,6 +62,13 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
   string <- paste(string, "graph", "[",  paste(paste(names(graph_options), graph_options, sep = " = "), collapse = ", "), "]")
   string <- paste(string, "\n")
   string <- paste(string, "node", "[", paste(paste(names(node_options), node_options, sep = " = "), collapse = ", "), "]")
+  string <- paste(string, "\n")
+  nodes <- getNodes(model)
+  string <- paste(string, "node [shape = box] \n")
+  string <- paste(string, paste(nodes$observeds, collapse = "; "))
+  string <- paste(string, "\n")
+  string <- paste(string, "node [shape = oval] \n")
+  string <- paste(string, paste(nodes$latents, collapse = "; "))
   string <- paste(string, "\n")
   if(!is.null(labels)){
     labels_string = buildLabels(labels)

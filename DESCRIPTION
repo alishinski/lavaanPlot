@@ -1,7 +1,7 @@
 Package: lavaanPlot
 Type: Package
 Title: Path Diagrams for Lavaan Models via DiagrammeR
-Version: 0.1.0
+Version: 0.1.0.9999
 Author: Alex Lishinski
 Maintainer: Alex Lishinski <alexlishinski@gmail.com>
 Description: Plots path diagrams from models in lavaan using the plotting

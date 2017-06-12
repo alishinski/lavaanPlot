@@ -22,7 +22,7 @@ http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#edge-attribut
 
 Here's a quick example using the \code{mtcars} data set. 
 
-First fit your lavaan model. Right now, only path analysis models are supported by this package, but latent variables are coming soon.
+First fit your lavaan model. The package supports plotting lavaan regression relatinoships and latent variable - indicator relationships.
 
 ```{r}
 library(lavaan)
@@ -48,6 +48,19 @@ You can also specify different variable labels
 labels <- list(mpg = "Miles Per Gallon", cyl = "Cylinders", disp = "Displacement", hp = "Horsepower", qsec = "Speed", wt = "Weight")
 
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"))
+```
+
+An example showing latent variable relationships
+
+```{r}
+HS.model <- ' visual  =~ x1 + x2 + x3      
+textual =~ x4 + x5 + x6
+speed   =~ x7 + x8 + x9 
+'
+
+fit <- cfa(HS.model, data=HolzingerSwineford1939)
+
+lavaanPlot(model = fit, edge_options = list(color = "grey"))
 ```
 
 And there you have it. 
