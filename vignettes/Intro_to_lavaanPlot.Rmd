@@ -22,7 +22,7 @@ http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#edge-attribut
 
 Here's a quick example using the \code{mtcars} data set. 
 
-First fit your lavaan model. The package supports plotting lavaan regression relatinoships and latent variable - indicator relationships.
+First fit your lavaan model. The package supports plotting lavaan regression relationships and latent variable - indicator relationships.
 
 ```{r}
 library(lavaan)
