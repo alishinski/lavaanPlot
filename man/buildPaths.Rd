@@ -4,10 +4,16 @@
 \alias{buildPaths}
 \title{Extracts the paths from the lavaan model.}
 \usage{
-buildPaths(fit)
+buildPaths(fit, coefs = coefs, sig = sig, stand = stand)
 }
 \arguments{
 \item{fit}{A model fit object of class lavaan.}
+
+\item{coefs}{whether or not to include significant path coefficient values in diagram}
+
+\item{sig}{significance level for determining what significant paths are}
+
+\item{stand}{Should the coefficients being used be standardized coefficients}
 }
 \description{
 Extracts the paths from the lavaan model.

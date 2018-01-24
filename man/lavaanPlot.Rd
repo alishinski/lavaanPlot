@@ -6,7 +6,8 @@
 \usage{
 lavaanPlot(name = "plot", model, labels = NULL,
   graph_options = list(overlap = "true", fontsize = "10"),
-  node_options = list(shape = "box"), edge_options = list(color = "black"))
+  node_options = list(shape = "box"), edge_options = list(color = "black"),
+  coefs = FALSE, sig = 0.05, stand = TRUE)
 }
 \arguments{
 \item{name}{A string of the name of the plot.}
@@ -20,6 +21,12 @@ lavaanPlot(name = "plot", model, labels = NULL,
 \item{node_options}{A named list of node options for Diagrammer syntax, default provided.}
 
 \item{edge_options}{A named list of edge options for Diagrammer syntax., default provided.}
+
+\item{coefs}{whether or not to include significant path coefficient values in diagram}
+
+\item{sig}{significance level for determining what significant paths are}
+
+\item{stand}{Should the coefficients being used be standardized coefficients}
 }
 \value{
 A Diagrammer plot of the path diagram for \code{model}

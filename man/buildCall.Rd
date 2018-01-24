@@ -5,7 +5,7 @@
 \title{Builds the Diagrammer function call.}
 \usage{
 buildCall(name = "plot", model, labels = NULL, graph_options, node_options,
-  edge_options)
+  edge_options, coefs = coefs, sig = sig, stand = stand)
 }
 \arguments{
 \item{name}{A string of the name of the plot.}
@@ -18,7 +18,13 @@ buildCall(name = "plot", model, labels = NULL, graph_options, node_options,
 
 \item{node_options}{A named list of node options for Diagrammer syntax.}
 
-\item{edge_options}{A named list of edge options for Diagrammer syntax..}
+\item{edge_options}{A named list of edge options for Diagrammer syntax.}
+
+\item{coefs}{whether or not to include significant path coefficient values in diagram}
+
+\item{sig}{significance level for determining what significant paths are}
+
+\item{stand}{Should the coefficients being used be standardized coefficients}
 }
 \value{
 A string specifying the path diagram for \code{model}
