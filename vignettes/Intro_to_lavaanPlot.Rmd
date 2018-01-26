@@ -39,7 +39,7 @@ Then using that model fit object, simply call the \code{lavaanPlot} function, sp
 ```{r}
 library(lavaanPlot)
 
-lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"))
+lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
 
 You can also specify different variable labels
@@ -47,7 +47,7 @@ You can also specify different variable labels
 ```{r}
 labels <- list(mpg = "Miles Per Gallon", cyl = "Cylinders", disp = "Displacement", hp = "Horsepower", qsec = "Speed", wt = "Weight")
 
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"))
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
 
 An example showing latent variable relationships
@@ -63,4 +63,22 @@ fit <- cfa(HS.model, data=HolzingerSwineford1939)
 lavaanPlot(model = fit, edge_options = list(color = "grey"))
 ```
 
-And there you have it. 
+And now you can label the plot edges with the coefficient values (standardized or not) for significant paths (you can also specify whatever significance level you want so you can plot values for whatever coefficients you want).
+
+```{r}
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+
+fit <- sem(model, data = mtcars)
+summary(fit)
+
+# significant standardized paths only
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE)
+
+# significant unstandardized paths
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = FALSE)
+
+# All paths unstandardized
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = FALSE, sig = 1.00)
+```
+
