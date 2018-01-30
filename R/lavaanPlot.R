@@ -27,7 +27,7 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand){
   regress_paths <- ""
   }
   if(any(latent)) {
-  latent_paths <- paste(paste(ParTable$rhs[latent], ParTable$lhs[latent], sep = "->"), collapse = " ")
+  latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), collapse = " ")
   } else {
   latent_paths <- ""
   }
