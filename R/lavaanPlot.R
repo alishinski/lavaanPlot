@@ -16,6 +16,12 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand){
   pval_reg <- (1 - stats::pnorm(abs(zval_reg))) * 2
   signif_reg <- pval_reg < sig
   coef <- ifelse(signif_reg, round(ParTable$est[regress], digits = 2), "")
+
+  zval_lat <- ParTable$est[latent] / ParTable$se[latent]
+  pval_lat <- (1 - stats::pnorm(abs(zval_lat))) * 2
+  signif_lat <- pval_lat < sig
+  latent_coef <- ifelse(signif_lat, round(ParTable$est[latent], digits = 2), "")
+
   #penwidths <- ifelse(coefs == "", 1, 2)
   if(any(regress)){
     if(coefs){
@@ -27,7 +33,11 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand){
   regress_paths <- ""
   }
   if(any(latent)) {
-  latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), collapse = " ")
+    if(coefs){
+      latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), paste("[label = '", latent_coef, "']", sep = ""), collapse = " ")
+    } else {
+      latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), collapse = " ")
+    }
   } else {
   latent_paths <- ""
   }
