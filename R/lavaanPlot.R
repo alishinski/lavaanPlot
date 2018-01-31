@@ -4,7 +4,8 @@
 #' @param coefs whether or not to include significant path coefficient values in diagram
 #' @param sig significance level for determining what significant paths are
 #' @param stand Should the coefficients being used be standardized coefficients
-buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand){
+#' @param covs Should model covariances be included in the diagram
+buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs){
   if(stand){
     ParTable <- lavaan::standardizedsolution(fit)
   } else {
@@ -12,6 +13,8 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand){
   }
   regress <- ParTable$op == "~"
   latent <- ParTable$op == "=~"
+  cov <- ParTable$op == "~~" & (ParTable$rhs %in% ParTable$lhs[latent | regress]) & (ParTable$rhs != ParTable$lhs)
+
   zval_reg <- ParTable$est[regress] / ParTable$se[regress]
   pval_reg <- (1 - stats::pnorm(abs(zval_reg))) * 2
   signif_reg <- pval_reg < sig
@@ -41,7 +44,25 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand){
   } else {
   latent_paths <- ""
   }
-  paste(regress_paths, latent_paths, sep = " ")
+  if(any(cov)){
+    if(covs){
+    cov_paths <- paste("concentrate = true",
+          paste(
+            ParTable$rhs[cov],
+            ParTable$lhs[cov], sep = " -> "),
+
+          paste(
+            ParTable$lhs[cov],
+            ParTable$rhs[cov], sep = " -> "),
+          collapse = " "
+    )
+    } else {
+      cov_paths <- ""
+    }
+  } else {
+    cov_paths <- ""
+  }
+  paste(regress_paths, latent_paths, cov_paths, sep = " ")
 }
 
 #' Extracts the paths from the lavaan model.
@@ -85,7 +106,7 @@ buildLabels <- function(label_list){
 #' @param sig significance level for determining what significant paths are
 #' @param stand Should the coefficients being used be standardized coefficients
 #' @return A string specifying the path diagram for \code{model}
-buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_options, edge_options, coefs = coefs, sig = sig, stand = stand){
+buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_options, edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs){
   string <- ""
   string <- paste(string, "digraph", name, "{")
   string <- paste(string, "\n")
@@ -107,7 +128,7 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
   string <- paste(string, "\n")
   string <- paste(string, "edge", "[", paste(paste(names(edge_options), edge_options, sep = " = "), collapse = ", "), "]")
   string <- paste(string, "\n")
-  string <- paste(string, buildPaths(model, coefs = coefs, sig = sig, stand = stand))
+  string <- paste(string, buildPaths(model, coefs = coefs, sig = sig, stand = stand, covs = covs))
   string <- paste(string, "}", sep = "\n")
   string
 }
@@ -126,8 +147,8 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
 #' @return A Diagrammer plot of the path diagram for \code{model}
 #' @import DiagrammeR
 #' @export
-lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black"), coefs = FALSE, sig = 0.05, stand = TRUE){
-  plotCall <- buildCall(name = name, model = model, labels = labels, graph_options = graph_options, node_options = node_options, edge_options = edge_options, coefs = coefs, sig = sig, stand = stand)
+lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black"), coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE){
+  plotCall <- buildCall(name = name, model = model, labels = labels, graph_options = graph_options, node_options = node_options, edge_options = edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs)
   grViz(plotCall)
 }
 
