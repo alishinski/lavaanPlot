@@ -5,12 +5,14 @@
 #' @param sig significance level for determining what significant paths are
 #' @param stand Should the coefficients being used be standardized coefficients
 #' @param covs Should model covariances be included in the diagram
-buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs){
+#' @param stars Should significance stars be included
+buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars){
   if(stand){
     ParTable <- lavaan::standardizedsolution(fit)
   } else {
     ParTable <- fit@ParTable
   }
+
   regress <- ParTable$op == "~"
   latent <- ParTable$op == "=~"
   cov <- ParTable$op == "~~" & (ParTable$rhs %in% ParTable$lhs[latent | regress]) & (ParTable$rhs != ParTable$lhs)
@@ -25,10 +27,26 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs
   signif_lat <- pval_lat < sig
   latent_coef <- ifelse(signif_lat, round(ParTable$est[latent], digits = 2), "")
 
+  if(stars){
+    pval_reg <- ParTable$pvalue[regress]
+    stars_reg <- unlist(lapply(X = pval_reg, FUN = sig_stars))
+
+    pval_lat <- ParTable$pvalue[latent]
+    stars_lat <- unlist(lapply(X = pval_lat, FUN = sig_stars))
+
+    pval_cov <- ParTable$pvalue[cov]
+    stars_cov <- unlist(lapply(X = pval_cov, FUN = sig_stars))
+  } else {
+    stars_reg <- ""
+    stars_lat <- ""
+    stars_cov <- ""
+  }
+
+
   #penwidths <- ifelse(coefs == "", 1, 2)
   if(any(regress)){
     if(coefs){
-      regress_paths <- paste(paste(ParTable$rhs[regress], ParTable$lhs[regress], sep = "->"), paste("[label = '", coef, "']", sep = ""), collapse = " ")
+      regress_paths <- paste(paste(ParTable$rhs[regress], ParTable$lhs[regress], sep = "->"), paste("[label = '", coef, stars_reg, "']", sep = ""), collapse = " ")
     } else {
       regress_paths <- paste(paste(ParTable$rhs[regress], ParTable$lhs[regress], sep = "->"), collapse = " ")
     }
@@ -37,7 +55,7 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs
   }
   if(any(latent)) {
     if(coefs){
-      latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), paste("[label = '", latent_coef, "']", sep = ""), collapse = " ")
+      latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), paste("[label = '", latent_coef, stars_lat, "']", sep = ""), collapse = " ")
     } else {
       latent_paths <- paste(paste(ParTable$lhs[latent], ParTable$rhs[latent], sep = "->"), collapse = " ")
     }
@@ -46,16 +64,17 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs
   }
   if(any(cov)){
     if(covs){
-    cov_paths <- paste("concentrate = true",
-          paste(
-            ParTable$rhs[cov],
-            ParTable$lhs[cov], sep = " -> "),
 
-          paste(
-            ParTable$lhs[cov],
-            ParTable$rhs[cov], sep = " -> "),
-          collapse = " "
-    )
+      covVals <- round(ParTable$est[cov], digits = 2)
+
+      cov_paths <- paste(
+        paste(
+          ParTable$rhs[cov],
+          ParTable$lhs[cov], sep = " -> "),
+        paste("[label = '", covVals, stars_cov, "', dir = 'both']", sep = ""),
+        collapse = " "
+      )
+
     } else {
       cov_paths <- ""
     }
@@ -86,6 +105,22 @@ getNodes <- function(fit){
   list(observeds = observed_nodes, latents = latent_nodes)
 }
 
+#' Generates standard significance stars
+#'
+#' @param pvals a vector of p values
+sig_stars <- function(pvals){
+  if(pvals <= 0.001){
+    star = "***"
+  } else if (pvals <= 0.01){
+    star = "**"
+  } else if (pvals <= 0.05){
+    star = "*"
+  } else {
+    star = ""
+  }
+  star
+}
+
 #' Adds variable labels to the Diagrammer plot function call.
 #'
 #' @param label_list A named list of variable labels.
@@ -105,8 +140,10 @@ buildLabels <- function(label_list){
 #' @param coefs whether or not to include significant path coefficient values in diagram
 #' @param sig significance level for determining what significant paths are
 #' @param stand Should the coefficients being used be standardized coefficients
+#' @param covs Should model covariances be included in the diagram
+#' @param stars Should significance stars be included in the model
 #' @return A string specifying the path diagram for \code{model}
-buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_options, edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs){
+buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_options, edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars){
   string <- ""
   string <- paste(string, "digraph", name, "{")
   string <- paste(string, "\n")
@@ -128,7 +165,7 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
   string <- paste(string, "\n")
   string <- paste(string, "edge", "[", paste(paste(names(edge_options), edge_options, sep = " = "), collapse = ", "), "]")
   string <- paste(string, "\n")
-  string <- paste(string, buildPaths(model, coefs = coefs, sig = sig, stand = stand, covs = covs))
+  string <- paste(string, buildPaths(model, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars))
   string <- paste(string, "}", sep = "\n")
   string
 }
@@ -144,11 +181,13 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
 #' @param coefs whether or not to include significant path coefficient values in diagram
 #' @param sig significance level for determining what significant paths are
 #' @param stand Should the coefficients being used be standardized coefficients
+#' @param covs Should model covariances be included in the diagram
+#' @param stars Should significance stars be included in the model
 #' @return A Diagrammer plot of the path diagram for \code{model}
 #' @import DiagrammeR
 #' @export
-lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black"), coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE){
-  plotCall <- buildCall(name = name, model = model, labels = labels, graph_options = graph_options, node_options = node_options, edge_options = edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs)
+lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black"), coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE, stars = FALSE){
+  plotCall <- buildCall(name = name, model = model, labels = labels, graph_options = graph_options, node_options = node_options, edge_options = edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars)
   grViz(plotCall)
 }
 

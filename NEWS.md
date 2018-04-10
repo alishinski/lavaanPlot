@@ -4,4 +4,16 @@
 
 * Added support for edge labels with significant coefficients
 
+# lavaanPlot 0.4.0
 
+* Added support for latent variable loading labels
+
+* Added support for covariance edges
+
+* Corrected the direction of arrows for latent variable loadings
+
+# lavaanPlot 0.5.0
+
+* Added support for covariance edge labels
+
+* Added support for significance stars
