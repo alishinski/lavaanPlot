@@ -13,6 +13,10 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs
     ParTable <- fit@ParTable
   }
 
+  # get rid of . from variable names
+  ParTable$lhs <- stringr::str_replace_all(fit@ParTable$lhs, pattern = "\\.", replacement = "")
+  ParTable$rhs <- stringr::str_replace_all(fit@ParTable$rhs, pattern = "\\.", replacement = "")
+
   regress <- ParTable$op == "~"
   latent <- ParTable$op == "=~"
   cov <- ParTable$op == "~~" & (ParTable$rhs %in% ParTable$lhs[latent | regress]) & (ParTable$rhs != ParTable$lhs)
@@ -88,6 +92,7 @@ buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs
 #'
 #' @param fit A model fit object of class lavaan.
 getNodes <- function(fit){
+  # remove . from variable names
   regress <- fit@ParTable$op == "~"
   latent <- fit@ParTable$op == "=~"
   observed_nodes <- c()
@@ -102,6 +107,11 @@ getNodes <- function(fit){
   }
   # make sure latent variables don't show up in both
   observed_nodes <- setdiff(observed_nodes, latent_nodes)
+
+  # remove . from variable names
+  observed_nodes <- stringr::str_replace_all(observed_nodes, pattern = "\\.", replacement = "")
+  latent_nodes <- stringr::str_replace_all(latent_nodes, pattern = "\\.", replacement = "")
+
   list(observeds = observed_nodes, latents = latent_nodes)
 }
 
