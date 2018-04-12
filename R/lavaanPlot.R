@@ -6,7 +6,8 @@
 #' @param stand Should the coefficients being used be standardized coefficients
 #' @param covs Should model covariances be included in the diagram
 #' @param stars Should significance stars be included
-buildPaths <- function(fit, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars){
+#' @importFrom stringr str_replace_all
+buildPaths <- function(fit, coefs = TRUE, sig = 0.05, stand = TRUE, covs = FALSE, stars = FALSE){
   if(stand){
     ParTable <- lavaan::standardizedsolution(fit)
   } else {
@@ -143,17 +144,13 @@ buildLabels <- function(label_list){
 #'
 #' @param name A string of the name of the plot.
 #' @param model A model fit object of class lavaan.
-#' @param labels  An optionalnamed list of variable labels fit object of class lavaan.
+#' @param labels  An optional named list of variable labels fit object of class lavaan.
 #' @param graph_options  A named list of graph options for Diagrammer syntax.
 #' @param node_options  A named list of node options for Diagrammer syntax.
 #' @param edge_options  A named list of edge options for Diagrammer syntax.
-#' @param coefs whether or not to include significant path coefficient values in diagram
-#' @param sig significance level for determining what significant paths are
-#' @param stand Should the coefficients being used be standardized coefficients
-#' @param covs Should model covariances be included in the diagram
-#' @param stars Should significance stars be included in the model
+#' @param ... additional arguments to be passed to \code{buildPaths}
 #' @return A string specifying the path diagram for \code{model}
-buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_options, edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars){
+buildCall <- function(name = name, model = model, labels = labels, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black"), ...){
   string <- ""
   string <- paste(string, "digraph", name, "{")
   string <- paste(string, "\n")
@@ -175,7 +172,7 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
   string <- paste(string, "\n")
   string <- paste(string, "edge", "[", paste(paste(names(edge_options), edge_options, sep = " = "), collapse = ", "), "]")
   string <- paste(string, "\n")
-  string <- paste(string, buildPaths(model, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars))
+  string <- paste(string, buildPaths(model, ...))
   string <- paste(string, "}", sep = "\n")
   string
 }
@@ -184,20 +181,13 @@ buildCall <- function(name = "plot", model, labels = NULL, graph_options, node_o
 #'
 #' @param name A string of the name of the plot.
 #' @param model A model fit object of class lavaan.
-#' @param labels  An optional named list of variable labels fit object of class lavaan.
-#' @param graph_options  A named list of graph options for Diagrammer syntax, default provided.
-#' @param node_options  A named list of node options for Diagrammer syntax, default provided.
-#' @param edge_options  A named list of edge options for Diagrammer syntax., default provided.
-#' @param coefs whether or not to include significant path coefficient values in diagram
-#' @param sig significance level for determining what significant paths are
-#' @param stand Should the coefficients being used be standardized coefficients
-#' @param covs Should model covariances be included in the diagram
-#' @param stars Should significance stars be included in the model
+#' @param labels  An optional named list of variable labels.
+#' @param ... Additional arguments to be called to \code{buildCall} and \code{buildPaths}
 #' @return A Diagrammer plot of the path diagram for \code{model}
-#' @import DiagrammeR
+#' @importFrom DiagrammeR grViz
 #' @export
-lavaanPlot <- function(name = "plot", model, labels = NULL, graph_options = list(overlap = "true", fontsize = "10"), node_options = list(shape = "box"), edge_options = list(color = "black"), coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE, stars = FALSE){
-  plotCall <- buildCall(name = name, model = model, labels = labels, graph_options = graph_options, node_options = node_options, edge_options = edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs, stars = stars)
+lavaanPlot <- function(name = "plot", model, labels = NULL, ...){
+  plotCall <- buildCall(name = name, model = model, labels = labels, ...)
   grViz(plotCall)
 }
 

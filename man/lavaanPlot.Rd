@@ -4,34 +4,16 @@
 \alias{lavaanPlot}
 \title{Plots lavaan path model with DiagrammeR}
 \usage{
-lavaanPlot(name = "plot", model, labels = NULL,
-  graph_options = list(overlap = "true", fontsize = "10"),
-  node_options = list(shape = "box"), edge_options = list(color = "black"),
-  coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE,
-  stars = FALSE)
+lavaanPlot(name = "plot", model, labels = NULL, ...)
 }
 \arguments{
 \item{name}{A string of the name of the plot.}
 
 \item{model}{A model fit object of class lavaan.}
 
-\item{labels}{An optional named list of variable labels fit object of class lavaan.}
+\item{labels}{An optional named list of variable labels.}
 
-\item{graph_options}{A named list of graph options for Diagrammer syntax, default provided.}
-
-\item{node_options}{A named list of node options for Diagrammer syntax, default provided.}
-
-\item{edge_options}{A named list of edge options for Diagrammer syntax., default provided.}
-
-\item{coefs}{whether or not to include significant path coefficient values in diagram}
-
-\item{sig}{significance level for determining what significant paths are}
-
-\item{stand}{Should the coefficients being used be standardized coefficients}
-
-\item{covs}{Should model covariances be included in the diagram}
-
-\item{stars}{Should significance stars be included in the model}
+\item{...}{Additional arguments to be called to \code{buildCall} and \code{buildPaths}}
 }
 \value{
 A Diagrammer plot of the path diagram for \code{model}

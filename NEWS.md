@@ -17,3 +17,10 @@
 * Added support for covariance edge labels
 
 * Added support for significance stars
+
+# lavaanPlot 0.5.1
+
+* Fixed bug caused by . in variable names
+
+* simplified the functions using the ... argument
+

@@ -4,16 +4,17 @@
 \alias{buildCall}
 \title{Builds the Diagrammer function call.}
 \usage{
-buildCall(name = "plot", model, labels = NULL, graph_options, node_options,
-  edge_options, coefs = coefs, sig = sig, stand = stand, covs = covs,
-  stars = stars)
+buildCall(name = name, model = model, labels = labels,
+  graph_options = list(overlap = "true", fontsize = "10"),
+  node_options = list(shape = "box"), edge_options = list(color = "black"),
+  ...)
 }
 \arguments{
 \item{name}{A string of the name of the plot.}
 
 \item{model}{A model fit object of class lavaan.}
 
-\item{labels}{An optionalnamed list of variable labels fit object of class lavaan.}
+\item{labels}{An optional named list of variable labels fit object of class lavaan.}
 
 \item{graph_options}{A named list of graph options for Diagrammer syntax.}
 
@@ -21,15 +22,7 @@ buildCall(name = "plot", model, labels = NULL, graph_options, node_options,
 
 \item{edge_options}{A named list of edge options for Diagrammer syntax.}
 
-\item{coefs}{whether or not to include significant path coefficient values in diagram}
-
-\item{sig}{significance level for determining what significant paths are}
-
-\item{stand}{Should the coefficients being used be standardized coefficients}
-
-\item{covs}{Should model covariances be included in the diagram}
-
-\item{stars}{Should significance stars be included in the model}
+\item{...}{additional arguments to be passed to \code{buildPaths}}
 }
 \value{
 A string specifying the path diagram for \code{model}

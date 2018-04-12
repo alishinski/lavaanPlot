@@ -15,12 +15,12 @@ The lavaan package is an excellent package for structural equation models, and t
 
 ## Package example
 
-The package is very straightforward to use, simply call the \code{lavaanPlot} function with your lavaan model, adding whatever graph, node and edge attributes you want as a named list (graph attributes are specified as a standard default value that shows you what the other attribute lists should look like). For your reference, the available attributes can be found here:
+The package is very straightforward to use, simply call the `lavaanPlot` function with your lavaan model, adding whatever graph, node and edge attributes you want as a named list (graph attributes are specified as a standard default value that shows you what the other attribute lists should look like). For your reference, the available attributes can be found here:
 
 http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#node-attributes
 http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#edge-attributes
 
-Here's a quick example using the \code{mtcars} data set. 
+Here's a quick example using the `mtcars` data set. 
 
 First fit your lavaan model. The package supports plotting lavaan regression relationships and latent variable - indicator relationships.
 
@@ -34,10 +34,10 @@ fit <- sem(model, data = mtcars)
 summary(fit)
 ```
 
-Then using that model fit object, simply call the \code{lavaanPlot} function, specifying your desired graph parameters.
+Then using that model fit object, simply call the `lavaanPlot` function, specifying your desired graph parameters.
 
 ```{r}
-library(lavaanPlot)
+devtools::load_all(".")
 
 lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
@@ -117,6 +117,12 @@ fit <- cfa(HS.model, data=HolzingerSwineford1939)
 labels = list(visual = "Visual Ability", textual = "Textual Ability", speed = "Speed Ability")
 
 # significant standardized paths only
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = T)
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE)
+```
+
+You can include significance stars as well 
+
+```{r}
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE)
 ```
 
