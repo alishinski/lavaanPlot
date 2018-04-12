@@ -5,13 +5,15 @@
 #' @param sig significance level for determining what significant paths are
 #' @param stand Should the coefficients being used be standardized coefficients
 #' @param covs Should model covariances be included in the diagram
-#' @param stars Should significance stars be included
+#' @param stars a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.
 #' @importFrom stringr str_replace_all
-buildPaths <- function(fit, coefs = TRUE, sig = 0.05, stand = TRUE, covs = FALSE, stars = FALSE){
+buildPaths <- function(fit, coefs = TRUE, sig = 0.05, stand = TRUE, covs = FALSE, stars = NULL){
   if(stand){
     ParTable <- lavaan::standardizedsolution(fit)
+    ParTableAlt <- fit@ParTable
   } else {
     ParTable <- fit@ParTable
+    ParTableAlt <- fit@ParTable
   }
 
   # get rid of . from variable names
@@ -22,31 +24,41 @@ buildPaths <- function(fit, coefs = TRUE, sig = 0.05, stand = TRUE, covs = FALSE
   latent <- ParTable$op == "=~"
   cov <- ParTable$op == "~~" & (ParTable$rhs %in% ParTable$lhs[latent | regress]) & (ParTable$rhs != ParTable$lhs)
 
-  zval_reg <- ParTable$est[regress] / ParTable$se[regress]
+  zval_reg <- ParTableAlt$est[regress] / ParTableAlt$se[regress]
   pval_reg <- (1 - stats::pnorm(abs(zval_reg))) * 2
   signif_reg <- pval_reg < sig
   coef <- ifelse(signif_reg, round(ParTable$est[regress], digits = 2), "")
 
-  zval_lat <- ParTable$est[latent] / ParTable$se[latent]
+  zval_lat <- ParTableAlt$est[latent] / ParTableAlt$se[latent]
   pval_lat <- (1 - stats::pnorm(abs(zval_lat))) * 2
   signif_lat <- pval_lat < sig
   latent_coef <- ifelse(signif_lat, round(ParTable$est[latent], digits = 2), "")
 
-  if(stars){
-    pval_reg <- ParTable$pvalue[regress]
+  zval_cov <- ParTableAlt$est[cov] / ParTableAlt$se[cov]
+  pval_cov <- (1 - stats::pnorm(abs(zval_cov))) * 2
+  signif_cov <- pval_cov < sig
+  cov_vals <- ifelse(signif_cov, round(ParTable$est[cov], digits = 2), "")
+
+  if("regress" %in% stars){
+    #pval_reg <- ParTable$pvalue[regress]
     stars_reg <- unlist(lapply(X = pval_reg, FUN = sig_stars))
-
-    pval_lat <- ParTable$pvalue[latent]
-    stars_lat <- unlist(lapply(X = pval_lat, FUN = sig_stars))
-
-    pval_cov <- ParTable$pvalue[cov]
-    stars_cov <- unlist(lapply(X = pval_cov, FUN = sig_stars))
   } else {
     stars_reg <- ""
-    stars_lat <- ""
-    stars_cov <- ""
   }
 
+  if("latent" %in% stars){
+    #pval_lat <- ParTable$pvalue[latent]
+    stars_lat <- unlist(lapply(X = pval_lat, FUN = sig_stars))
+  } else {
+    stars_lat <- ""
+  }
+
+  if("covs" %in% stars){
+    #pval_cov <- ParTable$pvalue[cov]
+    stars_cov <- unlist(lapply(X = pval_cov, FUN = sig_stars))
+  } else {
+    stars_cov <- ""
+  }
 
   #penwidths <- ifelse(coefs == "", 1, 2)
   if(any(regress)){
@@ -76,7 +88,7 @@ buildPaths <- function(fit, coefs = TRUE, sig = 0.05, stand = TRUE, covs = FALSE
         paste(
           ParTable$rhs[cov],
           ParTable$lhs[cov], sep = " -> "),
-        paste("[label = '", covVals, stars_cov, "', dir = 'both']", sep = ""),
+        paste("[label = '", cov_vals, stars_cov, "', dir = 'both']", sep = ""),
         collapse = " "
       )
 

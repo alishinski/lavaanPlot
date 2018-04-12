@@ -24,3 +24,7 @@
 
 * simplified the functions using the ... argument
 
+* fixed significance stars to work with standardized and non-standardized coefficients
+
+* Changed significance stars so you can choose which parameters to use them with
+
