@@ -7,7 +7,7 @@
 #' @param covs Should model covariances be included in the diagram
 #' @param stars a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.
 #' @importFrom stringr str_replace_all
-buildPaths <- function(fit, coefs = TRUE, sig = 0.05, stand = TRUE, covs = FALSE, stars = NULL){
+buildPaths <- function(fit, coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE, stars = NULL){
   if(stand){
     ParTable <- lavaan::standardizedsolution(fit)
     ParTableAlt <- fit@ParTable

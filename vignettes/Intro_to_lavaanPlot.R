@@ -1,5 +1,6 @@
 ## ------------------------------------------------------------------------
 library(lavaan)
+library(lavaanPlot)
 
 model <- 'mpg ~ cyl + disp + hp
           qsec ~ disp + hp + wt'
@@ -8,8 +9,6 @@ fit <- sem(model, data = mtcars)
 summary(fit)
 
 ## ------------------------------------------------------------------------
-devtools::load_all(".")
-
 lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 
 ## ------------------------------------------------------------------------

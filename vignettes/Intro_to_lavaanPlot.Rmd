@@ -26,6 +26,7 @@ First fit your lavaan model. The package supports plotting lavaan regression rel
 
 ```{r}
 library(lavaan)
+library(lavaanPlot)
 
 model <- 'mpg ~ cyl + disp + hp
           qsec ~ disp + hp + wt'
@@ -37,8 +38,6 @@ summary(fit)
 Then using that model fit object, simply call the `lavaanPlot` function, specifying your desired graph parameters.
 
 ```{r}
-devtools::load_all(".")
-
 lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
 
