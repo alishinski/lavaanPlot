@@ -148,6 +148,7 @@ sig_stars <- function(pvals){
 #'
 #' @param label_list A named list of variable labels.
 buildLabels <- function(label_list){
+  names(label_list) <- stringr::str_replace_all(names(label_list), pattern = "\\.", replacement = "")
   labs <- paste(names(label_list), " [label = ", "'", label_list, "'", "]", sep = "")
   paste(labs, collapse = "\n")
 }

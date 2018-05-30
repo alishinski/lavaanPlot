@@ -4,7 +4,7 @@
 \alias{buildPaths}
 \title{Extracts the paths from the lavaan model.}
 \usage{
-buildPaths(fit, coefs = FALSE, sig = 0.05, stand = FALSE, covs = FALSE,
+buildPaths(fit, coefs = FALSE, sig = 1, stand = FALSE, covs = FALSE,
   stars = NULL)
 }
 \arguments{
