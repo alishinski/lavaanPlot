@@ -5,7 +5,7 @@
 \title{Extracts the paths from the lavaan model.}
 \usage{
 buildPaths(fit, coefs = FALSE, sig = 1, stand = FALSE, covs = FALSE,
-  stars = NULL)
+  stars = NULL, digits = 2)
 }
 \arguments{
 \item{fit}{A model fit object of class lavaan.}
@@ -19,6 +19,8 @@ buildPaths(fit, coefs = FALSE, sig = 1, stand = FALSE, covs = FALSE,
 \item{covs}{Should model covariances be included in the diagram}
 
 \item{stars}{a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.}
+
+\item{digits}{A number indicating the desired number of digits for the coefficient values in the plot}
 }
 \description{
 Extracts the paths from the lavaan model.

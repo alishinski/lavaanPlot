@@ -77,3 +77,6 @@ lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", font
 ## ------------------------------------------------------------------------
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE)
 
+## ------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+

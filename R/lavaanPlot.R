@@ -6,8 +6,9 @@
 #' @param stand Should the coefficients being used be standardized coefficients
 #' @param covs Should model covariances be included in the diagram
 #' @param stars a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.
+#' @param digits A number indicating the desired number of digits for the coefficient values in the plot
 #' @importFrom stringr str_replace_all
-buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FALSE, stars = NULL){
+buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FALSE, stars = NULL, digits = 2){
   if(stand){
     ParTable <- lavaan::standardizedsolution(fit)
     ParTableAlt <- fit@ParTable
@@ -27,17 +28,17 @@ buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FAL
   zval_reg <- ParTableAlt$est[regress] / ParTableAlt$se[regress]
   pval_reg <- (1 - stats::pnorm(abs(zval_reg))) * 2
   signif_reg <- pval_reg < sig
-  coef <- ifelse(signif_reg, round(ParTable$est[regress], digits = 2), "")
+  coef <- ifelse(signif_reg, round(ParTable$est[regress], digits = digits), "")
 
   zval_lat <- ParTableAlt$est[latent] / ParTableAlt$se[latent]
   pval_lat <- (1 - stats::pnorm(abs(zval_lat))) * 2
   signif_lat <- pval_lat < sig
-  latent_coef <- ifelse(signif_lat, round(ParTable$est[latent], digits = 2), "")
+  latent_coef <- ifelse(signif_lat, round(ParTable$est[latent], digits = digits), "")
 
   zval_cov <- ParTableAlt$est[cov] / ParTableAlt$se[cov]
   pval_cov <- (1 - stats::pnorm(abs(zval_cov))) * 2
   signif_cov <- pval_cov < sig
-  cov_vals <- ifelse(signif_cov, round(ParTable$est[cov], digits = 2), "")
+  cov_vals <- ifelse(signif_cov, round(ParTable$est[cov], digits = digits), "")
 
   if("regress" %in% stars){
     #pval_reg <- ParTable$pvalue[regress]
