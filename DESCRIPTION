@@ -1,7 +1,7 @@
 Package: lavaanPlot
 Type: Package
 Title: Path Diagrams for Lavaan Models via DiagrammeR
-Version: 0.5.1
+Version: 0.5.2
 Author: Alex Lishinski
 Maintainer: Alex Lishinski <alexlishinski@gmail.com>
 URL: https://github.com/alishinski/lavaanPlot
@@ -16,7 +16,7 @@ Imports:
     lavaan,
     DiagrammeR,
     stringr
-RoxygenNote: 5.0.1
+RoxygenNote: 7.0.2
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr

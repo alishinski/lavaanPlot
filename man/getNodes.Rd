@@ -12,4 +12,3 @@ getNodes(fit)
 \description{
 Extracts the paths from the lavaan model.
 }
-

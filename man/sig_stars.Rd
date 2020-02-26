@@ -12,4 +12,3 @@ sig_stars(pvals)
 \description{
 Generates standard significance stars
 }
-

@@ -21,4 +21,3 @@ A Diagrammer plot of the path diagram for \code{model}
 \description{
 Plots lavaan path model with DiagrammeR
 }
-

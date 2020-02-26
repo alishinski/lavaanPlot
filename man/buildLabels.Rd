@@ -12,4 +12,3 @@ buildLabels(label_list)
 \description{
 Adds variable labels to the Diagrammer plot function call.
 }
-

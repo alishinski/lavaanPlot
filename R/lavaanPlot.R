@@ -84,7 +84,7 @@ buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FAL
     if(covs){
 
       covVals <- round(ParTable$est[cov], digits = 2)
-
+      if(coefs) {
       cov_paths <- paste(
         paste(
           ParTable$rhs[cov],
@@ -92,6 +92,16 @@ buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FAL
         paste("[label = '", cov_vals, stars_cov, "', dir = 'both']", sep = ""),
         collapse = " "
       )
+    } else {
+      cov_paths <- paste(
+        paste(
+          ParTable$rhs[cov],
+          ParTable$lhs[cov], sep = " -> "),
+        #paste("[label = '", cov_vals, stars_cov, "', dir = 'both']", sep = ""),
+        collapse = " "
+      )
+    }
+
 
     } else {
       cov_paths <- ""

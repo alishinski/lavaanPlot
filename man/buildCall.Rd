@@ -4,10 +4,15 @@
 \alias{buildCall}
 \title{Builds the Diagrammer function call.}
 \usage{
-buildCall(name = name, model = model, labels = labels,
+buildCall(
+  name = name,
+  model = model,
+  labels = labels,
   graph_options = list(overlap = "true", fontsize = "10"),
-  node_options = list(shape = "box"), edge_options = list(color = "black"),
-  ...)
+  node_options = list(shape = "box"),
+  edge_options = list(color = "black"),
+  ...
+)
 }
 \arguments{
 \item{name}{A string of the name of the plot.}
@@ -30,4 +35,3 @@ A string specifying the path diagram for \code{model}
 \description{
 Builds the Diagrammer function call.
 }
-
