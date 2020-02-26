@@ -33,3 +33,5 @@
 * Added digits option for coefficients
 
 * Changed coefs argument behavior so that it toggles coef values for covariances too
+
+* Plots now show residual covariances

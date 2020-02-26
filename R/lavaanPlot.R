@@ -23,7 +23,9 @@ buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FAL
 
   regress <- ParTable$op == "~"
   latent <- ParTable$op == "=~"
-  cov <- ParTable$op == "~~" & (ParTable$rhs %in% ParTable$lhs[latent | regress]) & (ParTable$rhs != ParTable$lhs)
+  #cov <- ParTable$op == "~~" & (ParTable$rhs %in% ParTable$lhs[latent | regress]) & (ParTable$rhs != ParTable$lhs)
+  cov <- ParTable$op == "~~" & (ParTable$rhs != ParTable$lhs)
+
 
   zval_reg <- ParTableAlt$est[regress] / ParTableAlt$se[regress]
   pval_reg <- (1 - stats::pnorm(abs(zval_reg))) * 2
@@ -97,7 +99,7 @@ buildPaths <- function(fit, coefs = FALSE, sig = 1.00, stand = FALSE, covs = FAL
         paste(
           ParTable$rhs[cov],
           ParTable$lhs[cov], sep = " -> "),
-        #paste("[label = '", cov_vals, stars_cov, "', dir = 'both']", sep = ""),
+        paste("[dir = 'both']", sep = ""),
         collapse = " "
       )
     }
