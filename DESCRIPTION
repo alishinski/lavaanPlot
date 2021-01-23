@@ -16,7 +16,7 @@ Imports:
     lavaan,
     DiagrammeR,
     stringr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
