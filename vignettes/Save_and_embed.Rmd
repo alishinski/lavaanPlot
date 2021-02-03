@@ -1,0 +1,44 @@
+---
+title: "lavaanPlot: Saving and Embedding Plots"
+author: "Alex Lishinski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lavaanPlot: Saving and Embedding Plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(lavaan)
+library(lavaanPlot)
+library(rsvg)
+library(magrittr)
+library(DiagrammeRsvg)
+```
+
+Functions for embedding plots in Rmarkdown pdfs and for saving plots as pngs
+
+`embed_plot_pdf()` saves your plot as a pdf image and then inserts that image into the pdf when you render Rmardown doc.
+
+`save_png()` as the name suggests, saves your plot as a png image in the local directory (or wherever you tell it to).
+
+```{r}
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+
+fit <- sem(model, data = mtcars)
+
+pl <- lavaanPlot(model = fit)
+
+
+# Not run for documentation only works on pdf
+#embed_plot_pdf(pl, "plot2.pdf")
+
+save_png(pl, "plot.png")
+```
+
+Now having saved the image, it can be embedded in the document with `![saved plot](plot.png)`
+
+
+![saved plot](plot.png)

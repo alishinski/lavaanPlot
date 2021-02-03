@@ -28,10 +28,14 @@
 
 * Changed significance stars so you can choose which parameters to use them with
 
-# lavanPlot 0.5.2
+# lavaanPlot 0.5.2
 
 * Added digits option for coefficients
 
 * Changed coefs argument behavior so that it toggles coef values for covariances too
 
 * Plots now show residual covariances
+
+# lavaanPlot 0.6.0
+
+* added functions to save plots as images and embed plots in pdfs with Rmarkdown 

@@ -41,7 +41,7 @@ Then using that model fit object, simply call the `lavaanPlot` function, specify
 lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
 
-You can also specify different variable labels
+You can also specify different variable labels using the a named list and the `labels` argument.
 
 ```{r}
 labels <- list(mpg = "Miles Per Gallon", cyl = "Cylinders", disp = "Displacement", hp = "Horsepower", qsec = "Speed", wt = "Weight")
@@ -49,7 +49,7 @@ labels <- list(mpg = "Miles Per Gallon", cyl = "Cylinders", disp = "Displacement
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
 
-An example showing latent variable relationships
+An example showing latent variable relationships:
 
 ```{r}
 HS.model <- ' visual  =~ x1 + x2 + x3      
@@ -62,7 +62,7 @@ fit <- cfa(HS.model, data=HolzingerSwineford1939)
 lavaanPlot(model = fit, edge_options = list(color = "grey"))
 ```
 
-And now you can label the plot edges with the coefficient values (standardized or not) for significant paths (you can also specify whatever significance level you want so you can plot values for whatever coefficients you want).
+You can label the plot edges with the coefficient values using `coefs = TRUE`. 
 
 ```{r}
 model <- 'mpg ~ cyl + disp + hp
@@ -71,14 +71,21 @@ model <- 'mpg ~ cyl + disp + hp
 fit <- sem(model, data = mtcars)
 summary(fit)
 
-# significant standardized paths only
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE)
+```
 
-# significant unstandardized paths
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = FALSE)
+By default it will show all paths, but you can also specify whatever significance level you want using the `sig` argument to only show significant paths.
 
+```{r}
+# significant standardized paths only
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, sig = .05)
+```
+
+You can also show standardized paths only with the `stand` argument.
+
+```{r}
 # All paths unstandardized
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = FALSE, sig = 1.00)
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE)
 ```
 
 Same works for latent variable loadings
@@ -93,14 +100,14 @@ fit <- cfa(HS.model, data=HolzingerSwineford1939)
 
 labels = list(visual = "Visual Ability", textual = "Textual Ability", speed = "Speed Ability")
 
-# significant standardized paths only
+# Show coefs
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE)
 
-# significant unstandardized paths
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = FALSE)
+# Significant paths
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, sig = .05)
 
-# All paths unstandardized
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = FALSE, sig = 1.00)
+# All paths standardized
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE)
 ```
 
 You can also include double-sided edges to represent model covariances if you want:
@@ -119,13 +126,15 @@ labels = list(visual = "Visual Ability", textual = "Textual Ability", speed = "S
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE)
 ```
 
-You can include significance stars as well 
+You can include significance stars as well using the `stars` option. 
+You can choose stars for regression paths, latent paths, or covariances. Specify which of the 3 you want ("regress", "latent", "covs").
 
 ```{r}
-lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE)
-```
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = "covs")
 
-You can change the number of digits in the coefficient value labelsas well 
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = "latent")
+```
+You can change the number of decimal places in the coefficient value labels as well with the `digits` option.
 
 ```{r}
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)

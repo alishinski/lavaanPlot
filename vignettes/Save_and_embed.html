@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Alex Lishinski" />
+
+<meta name="date" content="2021-02-03" />
+
+<title>lavaanPlot: Saving and Embedding Plots</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">lavaanPlot: Saving and Embedding Plots</h1>
+<h4 class="author">Alex Lishinski</h4>
+<h4 class="date">2021-02-03</h4>
+
+
+
+<p>Functions for embedding plots in Rmarkdown pdfs and for saving plots as pngs</p>
+<p><code>embed_plot_pdf()</code> saves your plot as a pdf image and then inserts that image into the pdf when you render Rmardown doc.</p>
+<p><code>save_png()</code> as the name suggests, saves your plot as a png image in the local directory (or wherever you tell it to).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>model &lt;-<span class="st"> &#39;mpg ~ cyl + disp + hp</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="st">          qsec ~ disp + hp + wt&#39;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model, <span class="dt">data =</span> mtcars)</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>pl &lt;-<span class="st"> </span><span class="kw">lavaanPlot</span>(<span class="dt">model =</span> fit)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># Not run for documentation only works on pdf</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#embed_plot_pdf(pl, &quot;plot2.pdf&quot;)</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">save_png</span>(pl, <span class="st">&quot;plot.png&quot;</span>)</span></code></pre></div>
+<p>Now having saved the image, it can be embedded in the document with <code>![saved plot](plot.png)</code></p>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">saved plot</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
