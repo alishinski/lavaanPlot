@@ -3,6 +3,7 @@
 #' @param plot plot object created by \code{lavaanPlot}
 #' @param path Filename to save the image
 #' @export
+#' @importFrom magrittr "%>%"
 save_png <- function(plot, path){
   DiagrammeRsvg::export_svg(plot) %>%
     charToRaw() %>%
@@ -16,6 +17,7 @@ save_png <- function(plot, path){
 #' @param plot plot object created by \code{lavaanPlot}
 #' @param path Filename to save the image
 #' @export
+#' @importFrom magrittr "%>%"
 embed_plot_pdf <- function(plot, path){
   DiagrammeRsvg::export_svg(plot) %>%
     charToRaw() %>%
