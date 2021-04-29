@@ -12,7 +12,7 @@
 
 <meta name="author" content="Alex Lishinski" />
 
-<meta name="date" content="2021-02-03" />
+<meta name="date" content="2021-04-28" />
 
 <title>lavaanPlot: Saving and Embedding Plots</title>
 
@@ -43,7 +43,14 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -329,7 +336,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">lavaanPlot: Saving and Embedding Plots</h1>
 <h4 class="author">Alex Lishinski</h4>
-<h4 class="date">2021-02-03</h4>
+<h4 class="date">2021-04-28</h4>
 
 
 
@@ -343,10 +350,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-5"><a href="#cb1-5"></a></span>
 <span id="cb1-6"><a href="#cb1-6"></a>pl &lt;-<span class="st"> </span><span class="kw">lavaanPlot</span>(<span class="dt">model =</span> fit)</span>
 <span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># Not run for documentation only works on pdf</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#embed_plot_pdf(pl, &quot;plot2.pdf&quot;)</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Example for pdf embed</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">embed_plot_pdf</span>(pl, <span class="st">&quot;plot2.pdf&quot;</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Example for saving to .png</span></span>
 <span id="cb1-12"><a href="#cb1-12"></a><span class="kw">save_png</span>(pl, <span class="st">&quot;plot.png&quot;</span>)</span></code></pre></div>
 <p>Now having saved the image, it can be embedded in the document with <code>![saved plot](plot.png)</code></p>
 <div class="figure">
