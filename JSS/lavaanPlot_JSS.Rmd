@@ -1,0 +1,60 @@
+---
+documentclass: jss
+author:
+  - name: Alex Lishinski
+    affiliation: University of Tennessee
+    # use this syntax to add text on several lines
+    address: |
+      | First line
+      | Second line
+    email: \email{name@company.com}
+    url: http://rstudio.com
+title:
+  formatted: "\\pkg{lavaanPlot}: An R package for plotting structural equation models"
+  # If you use tex in the formatted title, also supply version without
+  plain:     "lavaanPlot: An R package for plotting structural equation models"
+  # For running headers, if needed
+  short:     "\\pkg{lavaanPlot}: SEM plotting"
+abstract: >
+  The lavaan package is an excellent package for structural equation models, and the DiagrammeR package is an excellent package for producing nice looking graph diagrams. As of right now, the lavaan package has no built in plotting functions for models, and the available options from external packages don’t look as nice and aren’t as easy to use as DiagrammeR, in my opinion. Of course, you can use DiagrammeR to build path diagrams for your models, but it requires you to build the diagram specification manually. This package exists to streamline that process, allowing you to plot your lavaan models directly, without having to translate them into the DOT language specification that DiagrammeR uses.
+keywords:
+  # at least one keyword must be supplied
+  formatted: [keywords, not capitalized, "\\proglang{Java}"]
+  plain:     [keywords, not capitalized, Java]
+preamble: >
+  \usepackage{amsmath}
+output: rticles::jss_article
+---
+
+```{r, setup, include=FALSE}
+options(prompt = 'R> ', continue = '+ ')
+```
+
+# Introduction
+
+This template demonstrates some of the basic LaTeX that you need to know to create a JSS article.
+
+## Code formatting
+
+In general, don't use Markdown, but use the more precise LaTeX commands instead:
+
+* \proglang{Java}
+* \pkg{plyr}
+
+One exception is inline code, which can be written inside a pair of backticks (i.e., using the Markdown syntax).
+
+If you want to use LaTeX commands in headers, you need to provide a `short-title` attribute. You can also provide a custom identifier if necessary. See the header of Section \ref{r-code} for example.
+
+# \proglang{R} code {short-title="R code" #r-code}
+
+Can be inserted in regular R markdown blocks.
+
+```{r}
+x <- 1:10
+x
+```
+
+## Features specific to \pkg{rticles} {short-title="Features specific to rticles"}
+
+* Adding short titles to section headers is a feature specific to \pkg{rticles} (implemented via a Pandoc Lua filter). This feature is currently not supported by Pandoc and we will update this template if [it is officially supported in the future](https://github.com/jgm/pandoc/issues/4409).
+* Using the `\AND` syntax in the `author` field to add authors on a new line. This is a specific to the `rticles::jss_article` format.

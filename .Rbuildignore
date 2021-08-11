@@ -2,3 +2,8 @@
 ^\.Rproj\.user$
 ^doc$
 ^Meta$
+^JSS$
+^README_files$
+^README\.md$
+^README\.Rmd$
+^\.github$
