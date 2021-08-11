@@ -7,3 +7,5 @@
 ^README\.md$
 ^README\.Rmd$
 ^\.github$
+^.github$
+^README.*$
