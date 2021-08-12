@@ -39,3 +39,8 @@
 # lavaanPlot 0.6.0
 
 * added functions to save plots as images and embed plots in pdfs with Rmarkdown 
+
+# lavaanPlot 0.6.2
+
+Fixed issues with suggested packages that were causing trouble for CRAN submission
+

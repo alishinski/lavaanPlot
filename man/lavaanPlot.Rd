@@ -21,3 +21,11 @@ A Diagrammer plot of the path diagram for \code{model}
 \description{
 Plots lavaan path model with DiagrammeR
 }
+\examples{
+library(lavaan)
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+fit <- sem(model, data = mtcars)
+lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"),
+ edge_options = list(color = "grey"), coefs = FALSE)
+}

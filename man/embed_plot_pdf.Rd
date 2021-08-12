@@ -11,6 +11,19 @@ embed_plot_pdf(plot, path)
 
 \item{path}{Filename to save the image}
 }
+\value{
+no return value calls \code{include_graphics} to embed plot in pdf
+}
 \description{
 Embeds a plot into an rmarkdown pdf
+}
+\examples{
+library(lavaan)
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+fit <- sem(model, data = mtcars)
+pl <- lavaanPlot(model = fit)
+\dontrun{
+embed_plot_pdf(pl, "plot2.pdf")
+}
 }

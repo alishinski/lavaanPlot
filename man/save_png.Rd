@@ -11,6 +11,19 @@ save_png(plot, path)
 
 \item{path}{Filename to save the image}
 }
+\value{
+no return value saves plot as png
+}
 \description{
 Saves a plot as a png
+}
+\examples{
+library(lavaan)
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+fit <- sem(model, data = mtcars)
+pl <- lavaanPlot(model = fit)
+\dontrun{
+save_png(pl, "plot.png")
+}
 }

@@ -212,6 +212,13 @@ buildCall <- function(name = name, model = model, labels = labels, graph_options
 #' @return A Diagrammer plot of the path diagram for \code{model}
 #' @importFrom DiagrammeR grViz
 #' @export
+#' @examples
+#' library(lavaan)
+#' model <- 'mpg ~ cyl + disp + hp
+#'           qsec ~ disp + hp + wt'
+#' fit <- sem(model, data = mtcars)
+#' lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"),
+#'  edge_options = list(color = "grey"), coefs = FALSE)
 lavaanPlot <- function(name = "plot", model, labels = NULL, ...){
   plotCall <- buildCall(name = name, model = model, labels = labels, ...)
   grViz(plotCall)
