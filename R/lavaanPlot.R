@@ -205,8 +205,8 @@ buildCall <- function(name = name, model = model, labels = labels, graph_options
 
 #' Plots lavaan path model with DiagrammeR
 #'
-#' @param name A string of the name of the plot.
 #' @param model A model fit object of class lavaan.
+#' @param name A string of the name of the plot.
 #' @param labels  An optional named list of variable labels.
 #' @param ... Additional arguments to be called to \code{buildCall} and \code{buildPaths}
 #' @return A Diagrammer plot of the path diagram for \code{model}
@@ -219,8 +219,8 @@ buildCall <- function(name = name, model = model, labels = labels, graph_options
 #' fit <- sem(model, data = mtcars)
 #' lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"),
 #'  edge_options = list(color = "grey"), coefs = FALSE)
-lavaanPlot <- function(name = "plot", model, labels = NULL, ...){
-  plotCall <- buildCall(name = name, model = model, labels = labels, ...)
+lavaanPlot <- function(model, name = "plot", labels = NULL, ...){
+  plotCall <- buildCall(model = model, name = name, labels = labels, ...)
   grViz(plotCall)
 }
 

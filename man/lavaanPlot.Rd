@@ -4,12 +4,12 @@
 \alias{lavaanPlot}
 \title{Plots lavaan path model with DiagrammeR}
 \usage{
-lavaanPlot(name = "plot", model, labels = NULL, ...)
+lavaanPlot(model, name = "plot", labels = NULL, ...)
 }
 \arguments{
-\item{name}{A string of the name of the plot.}
-
 \item{model}{A model fit object of class lavaan.}
+
+\item{name}{A string of the name of the plot.}
 
 \item{labels}{An optional named list of variable labels.}
 
