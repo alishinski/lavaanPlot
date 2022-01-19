@@ -5,8 +5,8 @@
 \title{Builds the Diagrammer function call.}
 \usage{
 buildCall(
-  name = name,
   model = model,
+  name = name,
   labels = labels,
   graph_options = list(overlap = "true", fontsize = "10"),
   node_options = list(shape = "box"),
@@ -15,9 +15,9 @@ buildCall(
 )
 }
 \arguments{
-\item{name}{A string of the name of the plot.}
-
 \item{model}{A model fit object of class lavaan.}
+
+\item{name}{A string of the name of the plot.}
 
 \item{labels}{An optional named list of variable labels fit object of class lavaan.}
 
