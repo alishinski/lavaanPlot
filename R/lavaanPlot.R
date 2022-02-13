@@ -1,10 +1,10 @@
 #' Extracts the paths from the lavaan model.
 #'
 #' @param fit A model fit object of class lavaan.
-#' @param coefs whether or not to include significant path coefficient values in diagram
+#' @param coefs whether to include significant path coefficient values in diagram
 #' @param sig significance level for determining what significant paths are
-#' @param stand Should the coefficients being used be standardized coefficients
-#' @param covs Should model covariances be included in the diagram
+#' @param stand whether to use the standardize coefficients
+#' @param covs whether to include the model covariances in the diagram
 #' @param stars a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.
 #' @param digits A number indicating the desired number of digits for the coefficient values in the plot
 #' @importFrom stringr str_replace_all
