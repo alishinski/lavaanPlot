@@ -42,5 +42,10 @@
 
 # lavaanPlot 0.6.2
 
-Fixed issues with suggested packages that were causing trouble for CRAN submission
+* Fixed issues with suggested packages that were causing trouble for CRAN submission
+
+# lavaanPlot 0.6.3
+
+* Added support for specifying dimensions of saved png files
+
 

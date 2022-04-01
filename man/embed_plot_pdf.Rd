@@ -4,12 +4,16 @@
 \alias{embed_plot_pdf}
 \title{Embeds a plot into an rmarkdown pdf}
 \usage{
-embed_plot_pdf(plot, path)
+embed_plot_pdf(plot, path, width = NULL, height = NULL)
 }
 \arguments{
 \item{plot}{plot object created by \code{lavaanPlot}}
 
 \item{path}{Filename to save the image}
+
+\item{width}{width of image in pixels, NULL for default}
+
+\item{height}{height of image, NULL for default}
 }
 \value{
 no return value calls \code{include_graphics} to embed plot in pdf

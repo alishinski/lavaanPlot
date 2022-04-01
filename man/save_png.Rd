@@ -4,12 +4,16 @@
 \alias{save_png}
 \title{Saves a plot as a png}
 \usage{
-save_png(plot, path)
+save_png(plot, path, width = NULL, height = NULL)
 }
 \arguments{
 \item{plot}{plot object created by \code{lavaanPlot}}
 
-\item{path}{Filename to save the image}
+\item{path}{filename to save the image}
+
+\item{width}{width of image in pixels, NULL for default}
+
+\item{height}{height of image, NULL for default}
 }
 \value{
 no return value saves plot as png

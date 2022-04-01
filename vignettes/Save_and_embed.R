@@ -14,8 +14,8 @@
 #  pl <- lavaanPlot(model = fit)
 #  
 #  # Example for pdf embed
-#  embed_plot_pdf(pl, "plot2.pdf")
+#  embed_plot_pdf(pl, "plot2.pdf", width = 500)
 #  
 #  # Example for saving to .png
-#  save_png(pl, "plot.png")
+#  save_png(pl, "plot.png", width = 500)
 

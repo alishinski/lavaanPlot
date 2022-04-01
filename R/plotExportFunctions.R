@@ -1,7 +1,9 @@
 #' Saves a plot as a png
 #'
 #' @param plot plot object created by \code{lavaanPlot}
-#' @param path Filename to save the image
+#' @param path filename to save the image
+#' @param width width of image in pixels, NULL for default
+#' @param height height of image, NULL for default
 #' @return no return value saves plot as png
 #' @export
 #' @importFrom magrittr "%>%"
@@ -14,7 +16,7 @@
 #' \dontrun{
 #' save_png(pl, "plot.png")
 #' }
-save_png <- function(plot, path){
+save_png <- function(plot, path, width = NULL, height = NULL){
   if (!requireNamespace("DiagrammeRsvg", quietly = TRUE)) {
     stop("Package \"DiagrammeRsvg\" needed for this function to work. Please install it.",
          call. = FALSE)
@@ -27,7 +29,7 @@ save_png <- function(plot, path){
   } else {
     DiagrammeRsvg::export_svg(plot) %>%
       charToRaw() %>%
-      rsvg::rsvg() %>%
+      rsvg::rsvg(width = width, height = height) %>%
       png::writePNG(path)
   }
 }
@@ -36,6 +38,8 @@ save_png <- function(plot, path){
 #'
 #' @param plot plot object created by \code{lavaanPlot}
 #' @param path Filename to save the image
+#' @param width width of image in pixels, NULL for default
+#' @param height height of image, NULL for default
 #' @return no return value calls \code{include_graphics} to embed plot in pdf
 #' @export
 #' @importFrom magrittr "%>%"
@@ -48,7 +52,7 @@ save_png <- function(plot, path){
 #' \dontrun{
 #' embed_plot_pdf(pl, "plot2.pdf")
 #' }
-embed_plot_pdf <- function(plot, path){
+embed_plot_pdf <- function(plot, path, width = NULL, height = NULL){
   if (!requireNamespace("DiagrammeRsvg", quietly = TRUE)) {
     stop("Package \"DiagrammeRsvg\" needed for this function to work. Please install it.",
          call. = FALSE)
@@ -61,7 +65,7 @@ embed_plot_pdf <- function(plot, path){
   } else {
     DiagrammeRsvg::export_svg(plot) %>%
       charToRaw() %>%
-      rsvg::rsvg_pdf(path)
+      rsvg::rsvg_pdf(path, width = width, height = height)
 
     knitr::include_graphics(path)
   }
