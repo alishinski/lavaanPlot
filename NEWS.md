@@ -50,4 +50,6 @@
 
 * Updated vignette for layout graph options
 
+* Added package tests
+
 

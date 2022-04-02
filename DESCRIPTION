@@ -18,9 +18,12 @@ Imports:
     stringr,
     magrittr
 RoxygenNote: 7.1.2
-Suggests: knitr,
+Suggests: 
+    knitr,
     rmarkdown,
     DiagrammeRsvg,
     rsvg,
-    png
+    png,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3
