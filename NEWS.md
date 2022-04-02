@@ -48,4 +48,6 @@
 
 * Added support for specifying dimensions of saved png files
 
+* Updated vignette for layout graph options
+
 

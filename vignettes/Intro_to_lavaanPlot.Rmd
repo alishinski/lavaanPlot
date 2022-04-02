@@ -40,6 +40,7 @@ Then using that model fit object, simply call the `lavaanPlot` function, specify
 ```{r}
 lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = FALSE)
 ```
+## Plot customization options
 
 You can also specify different variable labels using the a named list and the `labels` argument.
 
@@ -138,4 +139,41 @@ You can change the number of decimal places in the coefficient value labels as w
 
 ```{r}
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+```
+
+## Graph Options
+
+### Orientations with `rankdir`
+
+You can also do additional options to modify the layout of your plots in certain ways.
+
+The graph option `rankdir` allows you to change the overall orientation of the plot between TB (top-bottom; default), BT (bottom-top), RL (right-left) and LR (left-right):
+
+```{r}
+lavaanPlot(model = fit, labels = labels, graph_options = list(rankdir = "LR"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+```
+
+```{r}
+lavaanPlot(model = fit, labels = labels, graph_options = list(rankdir = "RL"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+```
+
+
+
+```{r}
+lavaanPlot(model = fit, labels = labels, graph_options = list(rankdir = "BT"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+```
+### Layouts with `layout`
+
+The graph option `layout` allows you to change the layout engine used to generate the plot between dot (the default), neato, circo, twopi, plus some others, see: https://graphviz.org/docs/layouts/. Your mileage may vary as to whether any of these work for a given graph.
+
+```{r}
+lavaanPlot(model = fit, labels = labels, graph_options = list(layout = "neato"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+```
+
+```{r}
+lavaanPlot(model = fit, labels = labels, graph_options = list(layout = "circo"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+```
+
+```{r}
+lavaanPlot(model = fit, labels = labels, graph_options = list(layout = "twopi"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
 ```

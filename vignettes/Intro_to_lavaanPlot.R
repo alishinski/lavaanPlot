@@ -83,3 +83,21 @@ lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", font
 ## -----------------------------------------------------------------------------
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
 
+## -----------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, graph_options = list(rankdir = "LR"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+
+## -----------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, graph_options = list(rankdir = "RL"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+
+## -----------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, graph_options = list(rankdir = "BT"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+
+## -----------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, graph_options = list(layout = "neato"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+
+## -----------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, graph_options = list(layout = "circo"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+
+## -----------------------------------------------------------------------------
+lavaanPlot(model = fit, labels = labels, graph_options = list(layout = "twopi"), node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, covs = TRUE, stars = TRUE, digits = 1)
+
