@@ -19,6 +19,7 @@ library(DiagrammeRsvg)
 
 Functions for embedding plots in Rmarkdown pdfs and for saving plots as pngs
 
+
 `embed_plot_pdf()` saves your plot as a pdf image and then inserts that image into the pdf when you render Rmardown doc.
 
 `save_png()` as the name suggests, saves your plot as a png image in the local directory (or wherever you tell it to).
