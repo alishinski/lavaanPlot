@@ -9,3 +9,6 @@
 ^\.github$
 ^.github$
 ^README.*$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
