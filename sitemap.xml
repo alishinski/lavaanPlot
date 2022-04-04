@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/Intro_to_lavaanPlot.html</loc>
+    <loc>/articles/Intro_to_lavaanPlot.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/Save_and_embed.html</loc>
+    <loc>/articles/Save_and_embed.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/index.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/news/index.html</loc>
+    <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/buildCall.html</loc>
+    <loc>/reference/buildCall.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/buildLabels.html</loc>
+    <loc>/reference/buildLabels.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/buildPaths.html</loc>
+    <loc>/reference/buildPaths.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/embed_plot_pdf.html</loc>
+    <loc>/reference/embed_plot_pdf.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/getNodes.html</loc>
+    <loc>/reference/getNodes.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/index.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/lavaanPlot.html</loc>
+    <loc>/reference/lavaanPlot.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/save_png.html</loc>
+    <loc>/reference/save_png.html</loc>
   </url>
   <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/sig_stars.html</loc>
+    <loc>/reference/sig_stars.html</loc>
   </url>
 </urlset>
