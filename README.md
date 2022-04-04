@@ -2,9 +2,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/lavaanPlot)](https://cran.r-project.org/package=lavaanPlot)
 [![](https://cranlogs.r-pkg.org/badges/lavaanPlot)](https://cran.r-project.org/package=lavaanPlot)
-
-<!--
-[![R-CMD-check](https://github.com/data-edu/lavaanPlot/workflows/R-CMD-check/badge.svg)](https://github.com/alishinski/lavaanPlot/actions) -->
+[![R-CMD-check](https://github.com/alishinski/lavaanPlot/workflows/R-CMD-check/badge.svg)](https://github.com/alishinski/lavaanPlot/actions)
 
 ## Background
 
