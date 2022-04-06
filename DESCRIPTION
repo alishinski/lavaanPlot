@@ -17,7 +17,9 @@ Imports:
     lavaan,
     DiagrammeR,
     stringr,
-    magrittr
+    magrittr,
+    dplyr,
+    purrr
 RoxygenNote: 7.1.2
 Suggests: 
     knitr,
