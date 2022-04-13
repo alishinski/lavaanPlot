@@ -11,6 +11,7 @@ create_grviz(
   graph_options = graph_options,
   node_options = node_options,
   edge_options = edge_options,
+  stand = stand,
   ...
 )
 }
@@ -26,6 +27,8 @@ create_grviz(
 \item{node_options}{a named list of graphviz node attributes}
 
 \item{edge_options}{a named list of graphviz edge attributes}
+
+\item{stand}{Should the coefficients being used be standardized coefficients}
 
 \item{...}{Additional arguments to be passed to \code{create_edges}}
 }

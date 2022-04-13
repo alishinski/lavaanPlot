@@ -52,4 +52,6 @@
 
 * Added package tests
 
+# lavaanPlot 0.7.0
 
+* Introducing `lavaanPlot2` function, which replicates the old functionality in a more flexible platform

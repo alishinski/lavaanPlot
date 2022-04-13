@@ -4,7 +4,15 @@
 \alias{create_edges}
 \title{Creates edge data frame and adds formatting}
 \usage{
-create_edges(coefs, ndf, edge_options, coef_labels = FALSE)
+create_edges(
+  coefs,
+  ndf,
+  edge_options,
+  coef_labels = FALSE,
+  stand = FALSE,
+  stars = NULL,
+  sig = 1
+)
 }
 \arguments{
 \item{coefs}{a coefficient table from lavaan model created by \code{extract_coefs}}
@@ -14,6 +22,12 @@ create_edges(coefs, ndf, edge_options, coef_labels = FALSE)
 \item{edge_options}{a named list of graphviz edge attributes}
 
 \item{coef_labels}{whether to label edges with coefficient values}
+
+\item{stand}{Should the coefficients being used be standardized coefficients}
+
+\item{stars}{a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.}
+
+\item{sig}{significance level for determining what significant paths are}
 }
 \value{
 an edge data frame

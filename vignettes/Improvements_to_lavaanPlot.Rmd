@@ -1,0 +1,95 @@
+---
+title: "Improvements to lavaanPlot"
+author: "Alex Lishinski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Improvements to lavaanPlot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+I've been working on some improvements to the lavaanPlot package, in order to take advantage of updates to the diagrammeR package.
+
+I'll spare you all the details, but diagrammeR has introduced a way of building graph plots using node and edge defining dataframes, which enable a more extensible way of customizing plots. I am trying to bring the advantages of this flexibility to the `lavaanPlot` package to enable more customization. The old way that the package was set up is solid, but it's difficult to add new features, and the goal of the new approach is to unlock the full customization options that the graphViz software and the DOT language have to offer.
+
+I've tried to keep things from the old approach to the extent that I could, but there are some new elements of the user interface for this new version of the package. I'm not finished with everything I set out to accomplish yet, but I'm writing this vignette to introduce the new version of the package so people can give it a try and find issues that I can fix. I'm releasing this as version 0.7.0, with the goal of fixing issues and fully fleshing out the functionality that I'd like the package to have over a couple more iterations of the package to get ready for a fully matured 1.0.0 release, where hopefully then I can fully deprecate the old code.
+
+Here are some examples with the new code, the function being called `lavaanPlot2`. 
+
+Starting with a basic model using `mtcars` which only contains observed variable relationships and no latent variable relationships.
+
+```{r}
+library(lavaan)
+library(lavaanPlot)
+
+model <- 'mpg ~ cyl + disp + hp
+          qsec ~ disp + hp + wt'
+
+fit <- sem(model, data = mtcars)
+summary(fit)
+
+HS.model <- ' visual  =~ x1 + x2 + x3      
+textual =~ x4 + x5 + x6
+speed   =~ x7 + x8 + x9 
+'
+
+fit2 <- cfa(HS.model, data=HolzingerSwineford1939)
+summary(fit2)
+
+labels2 = c(visual = "Visual Ability", textual = "Textual Ability", speed = "Speed Ability")
+
+```
+
+You can still plot the model using no additional options:
+
+```{r}
+lavaanPlot2(fit)
+```
+
+You can still add labels to the plot with the `labels` argument, although it now uses a named character vector instead of a list:
+
+```{r}
+labels <- c(mpg = "Miles Per Gallon", cyl = "Cylinders", disp = "Displacement", hp = "Horsepower", qsec = "Speed", wt = "Weight")
+
+lavaanPlot2(fit, labels = labels)
+```
+
+Graph options, node options, and edge options are supplied via named lists, as previously:
+
+```{r}
+lavaanPlot2(fit, labels = labels, graph_options = list(title = "my first graph", rankdir = "LR"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"))
+```
+
+A change to the interface is how one can indicate which model paths to include in the plot, using the `include` argument. The default option will include just regression and latent variable relationships, `include = covs` will include model covariances, whereas `include = all` will also include error variances.
+
+```{r}
+lavaanPlot2(fit, include = "covs", labels = labels, graph_options = list(title = "my first graph"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"))
+
+lavaanPlot2(fit, include = "all", labels = labels, graph_options = list(title = "my first graph"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"))
+```
+
+Coefficient labels can still be included on the edges, and selectively for the different parts of the plot, using the `coef_lablels` argument:
+
+```{r}
+lavaanPlot2(fit, include = "covs", coef_labels = TRUE, labels = labels, graph_options = list(title = "my first graph"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"))
+```
+
+And significance stars can be added to these coefficient labels using the stars argument, just as with `lavaanPlot`:
+
+```{r}
+lavaanPlot2(fit, include = "covs", labels = labels, graph_options = list(label = "my first graph"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"), stars = c("regress"), coef_labels = TRUE)
+
+lavaanPlot2(fit2, include = "covs", labels = labels2, graph_options = list(label = "my first graph"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"), stars = c("latent"), coef_labels = TRUE)
+
+lavaanPlot2(fit2, include = "covs", labels = labels2, graph_options = list(label = "my first graph, which is being used to illustrate how to use the new code in the lavaanPlot package"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"), stars = c("covs"), coef_labels = TRUE)
+```
+
+The next stage of development is to allow for subset formatting, where different formatting is applied to sets of nodes or edges. The most obvious cases for this are to allow different formatting for the sets of latent vs observed nodes, and the regression, latent, covariance, and error variance edges. Ideally though I want to enable users to be able to apply different formatting to arbitrary subsets of nodes or edges as they see fit.

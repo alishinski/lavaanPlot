@@ -12,6 +12,7 @@ lavaanPlot2(
   graph_options = NULL,
   node_options = NULL,
   edge_options = NULL,
+  stand = FALSE,
   ...
 )
 }
@@ -29,6 +30,8 @@ lavaanPlot2(
 \item{node_options}{a named list of graphviz node attributes}
 
 \item{edge_options}{a named list of graphviz edge attributes}
+
+\item{stand}{Should the coefficients being used be standardized coefficients}
 
 \item{...}{Additional arguments to be passed to create_grviz for creating edges}
 }
