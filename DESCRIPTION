@@ -19,7 +19,8 @@ Imports:
     stringr,
     magrittr,
     dplyr,
-    purrr
+    purrr,
+    rlang
 RoxygenNote: 7.1.2
 Suggests: 
     knitr,

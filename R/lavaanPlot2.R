@@ -4,28 +4,28 @@
 #' @param include which parameters to include in the plot. Default is all regression and latent relationships. "covs" will also include covariances, while "all will also include error variances.
 #' @param stand Should the coefficients being used be standardized coefficients
 #' @return a data frame with lavaan model parameters
-#' @importFrom dplyr filter bind_cols
+#' @importFrom dplyr filter bind_cols .data
 extract_coefs <- function(model, include = NULL, stand = FALSE) {
   if(stand){
-    par_table <- lavaan::standardizedSolution(model) |>
-      dplyr::mutate(p_val = (1 - stats::pnorm(abs(z))) * 2)
+    par_table <- lavaan::standardizedSolution(model) %>%
+      dplyr::mutate(p_val = (1 - stats::pnorm(abs(.data$z))) * 2)
   } else {
-    par_table <- bind_cols(model@ParTable) |>
-      dplyr::mutate(z = est / se) |>
-      dplyr::mutate(p_val = (1 - stats::pnorm(abs(z))) * 2)
+    par_table <- bind_cols(model@ParTable) %>%
+      dplyr::mutate(z = .data$est / .data$se) %>%
+      dplyr::mutate(p_val = (1 - stats::pnorm(abs(.data$z))) * 2)
   }
 
-  par_table <- par_table |>
-    dplyr::mutate(stars = map(p_val, sig_stars))
+  par_table <- par_table %>%
+    dplyr::mutate(stars = map(.data$p_val, sig_stars))
 
   if (is.null(include)) {
-    bind_cols(par_table) |>
-      filter(op == "=~" | op == "~")
+    bind_cols(par_table) %>%
+      filter(.data$op == "=~" | .data$op == "~")
   } else if (include == "covs") {
-    bind_cols(par_table) |>
-      dplyr::filter(op == "=~" | op == "~" | (op == "~~" & lhs != rhs))
+    bind_cols(par_table) %>%
+      dplyr::filter(.data$op == "=~" | .data$op == "~" | (.data$op == "~~" & .data$lhs != .data$rhs))
   } else if (include == "all") {
-    bind_cols(par_table) |>
+    bind_cols(par_table) %>%
       dplyr::filter(all())
   }
 }
@@ -37,7 +37,8 @@ extract_coefs <- function(model, include = NULL, stand = FALSE) {
 #' @param node_options a named list of graphviz node attributes
 #' @return an edge data frame
 #' @importFrom purrr map_lgl map_dfc
-#' @importFrom dplyr bind_cols
+#' @importFrom dplyr bind_cols recode
+#' @importFrom rlang exec
 create_nodes <- function(coefs, labels = NULL, node_options) {
   regress <- coefs$op == "~"
   latent <- coefs$op == "=~"
@@ -174,12 +175,12 @@ convert_graph <- function(ndf, edf, graph_options) {
   gr <- DiagrammeR::create_graph(ndf, edf, attr_theme = NULL)
 
   if(!is.null(graph_options)){
-    gr_opts <- map2(graph_options, names(graph_options), function(x, names){c(attr = names, value = x, attr_type = "graph")}) |>
+    gr_opts <- map2(graph_options, names(graph_options), function(x, names){c(attr = names, value = x, attr_type = "graph")}) %>%
         bind_rows()
 
     gr$global_attrs <- bind_rows(gr$global_attrs, gr_opts)
   }
-  gr |>
+  gr %>%
     DiagrammeR::generate_dot()
 }
 
@@ -224,7 +225,7 @@ lavaanPlot2 <- function(model, labels = NULL, include = NULL, gr_viz = NULL, gra
   if (!is.null(gr_viz)) {
     grViz(gr_viz)
   } else {
-    create_grviz(model, labels, include, graph_options, node_options, edge_options, stand, ...) |>
+    create_grviz(model, labels, include, graph_options, node_options, edge_options, stand, ...) %>%
       grViz()
   }
 }

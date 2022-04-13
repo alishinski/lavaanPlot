@@ -2,7 +2,8 @@ pandoc: 2.11.4
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
+  Improvements_to_lavaanPlot: Improvements_to_lavaanPlot.html
   Intro_to_lavaanPlot: Intro_to_lavaanPlot.html
   Save_and_embed: Save_and_embed.html
-last_built: 2022-04-03T01:29Z
+last_built: 2022-04-13T17:15Z
 
