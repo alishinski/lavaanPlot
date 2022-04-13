@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="index.html">lavaanPlot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/Improvements_to_lavaanPlot.html">Improvements to lavaanPlot</a>
     <a class="dropdown-item" href="articles/Intro_to_lavaanPlot.html">Intro to lavaanPlot</a>
     <a class="dropdown-item" href="articles/Save_and_embed.html">lavaanPlot: Saving and Embedding Plots</a>
   </div>
@@ -75,6 +76,11 @@
 <div class="row">
   <main id="main" class="col-md-9">
 <div class="section level2">
+<h2 id="news">News<a class="anchor" aria-label="anchor" href="#news"></a>
+</h2>
+<p>The most recent update, version 0.7.0, is introducing a new iteration of the <code>lavaanPlot</code> function, called <code>lavaanPlot2</code>. Check out a new vignette explaining some of the changes here: <a href="https://lavaanplot.alexlishinski.com/improvements_to_lavaanplot" class="external-link">Improvements to lavaanPlot</a></p>
+</div>
+<div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
 <p>The lavaan package is an excellent package for structural equation models, and the DiagrammeR package is an excellent package for producing nice looking graph diagrams. As of right now, the lavaan package has no built in plotting functions for models, and the available options from external packages don’t look as nice and aren’t as easy to use as DiagrammeR, in my opinion. Of course, you can use DiagrammeR to build path diagrams for your models, but it requires you to build the diagram specification manually. This package exists to streamline that process, allowing you to plot your lavaan models directly, without having to translate them into the DOT language specification that DiagrammeR uses.</p>
@@ -97,7 +103,7 @@
 <p>First fit your lavaan model. The package supports plotting lavaan regression relationships and latent variable - indicator relationships.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## This is lavaan 0.6-8</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## This is lavaan 0.6-10</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co">## lavaan is FREE software! Please report any bugs.</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/alishinski/lavaanPlot" class="external-link">lavaanPlot</a></span><span class="op">)</span>
@@ -107,7 +113,7 @@
 
 <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## lavaan 0.6-8 ended normally after 36 iterations</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## lavaan 0.6-10 ended normally after 32 iterations</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co">## </span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="co">##   Estimator                                         ML</span></span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="co">##   Optimization method                           NLMINB</span></span>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">lavaanPlot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/Improvements_to_lavaanPlot.html">Improvements to lavaanPlot</a>
     <a class="dropdown-item" href="../articles/Intro_to_lavaanPlot.html">Intro to lavaanPlot</a>
     <a class="dropdown-item" href="../articles/Save_and_embed.html">lavaanPlot: Saving and Embedding Plots</a>
   </div>
@@ -85,8 +86,8 @@
 <span class="r-in"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">lavaanPlot</span><span class="op">(</span>model <span class="op">=</span> <span class="va">fit</span>, node_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="st">"box"</span>, fontname <span class="op">=</span> <span class="st">"Helvetica"</span><span class="op">)</span>,</span>
 <span class="r-in"> edge_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span>, coefs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<div id="htmlwidget-f2f0cff22d21543f7447" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f2f0cff22d21543f7447">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box, fontname = Helvetica ] \n node [shape = box] \n cyl; disp; hp; wt; mpg; qsec \n node [shape = oval] \n  \n \n edge [ color = grey ] \n cyl->mpg disp->mpg hp->mpg disp->qsec hp->qsec wt->qsec  \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></code></pre></div>
+<div id="htmlwidget-711e43ae832467599dd9" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-711e43ae832467599dd9">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box, fontname = Helvetica ] \n node [shape = box] \n cyl; disp; hp; wt; mpg; qsec \n node [shape = oval] \n  \n \n edge [ color = grey ] \n cyl->mpg disp->mpg hp->mpg disp->qsec hp->qsec wt->qsec  \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

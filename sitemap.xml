@@ -4,6 +4,9 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/Improvements_to_lavaanPlot.html</loc>
+  </url>
+  <url>
     <loc>/articles/Intro_to_lavaanPlot.html</loc>
   </url>
   <url>
@@ -31,7 +34,22 @@
     <loc>/reference/buildPaths.html</loc>
   </url>
   <url>
+    <loc>/reference/convert_graph.html</loc>
+  </url>
+  <url>
+    <loc>/reference/create_edges.html</loc>
+  </url>
+  <url>
+    <loc>/reference/create_grviz.html</loc>
+  </url>
+  <url>
+    <loc>/reference/create_nodes.html</loc>
+  </url>
+  <url>
     <loc>/reference/embed_plot_pdf.html</loc>
+  </url>
+  <url>
+    <loc>/reference/extract_coefs.html</loc>
   </url>
   <url>
     <loc>/reference/getNodes.html</loc>
@@ -41,6 +59,9 @@
   </url>
   <url>
     <loc>/reference/lavaanPlot.html</loc>
+  </url>
+  <url>
+    <loc>/reference/lavaanPlot2.html</loc>
   </url>
   <url>
     <loc>/reference/save_png.html</loc>
