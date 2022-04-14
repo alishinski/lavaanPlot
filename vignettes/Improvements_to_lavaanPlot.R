@@ -39,6 +39,7 @@ lavaanPlot2(fit, labels = labels, graph_options = list(label = "my first graph",
 ## -----------------------------------------------------------------------------
 lavaanPlot2(fit, include = "covs", labels = labels, graph_options = list(label = "Including covariates"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"))
 
+## -----------------------------------------------------------------------------
 lavaanPlot2(fit, include = "all", labels = labels, graph_options = list(label = "including error variances"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"))
 
 ## -----------------------------------------------------------------------------
@@ -47,7 +48,9 @@ lavaanPlot2(fit, include = "covs", coef_labels = TRUE, labels = labels, graph_op
 ## -----------------------------------------------------------------------------
 lavaanPlot2(fit, include = "covs", labels = labels, graph_options = list(label = "my first graph with significance stars"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"), stars = c("regress"), coef_labels = TRUE)
 
+## -----------------------------------------------------------------------------
 lavaanPlot2(fit2, include = "covs", labels = labels2, graph_options = list(label = "my first graph with signficance stars"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"), stars = c("latent"), coef_labels = TRUE)
 
+## -----------------------------------------------------------------------------
 lavaanPlot2(fit2, include = "covs", labels = labels2, graph_options = list(label = "my first graph, which is being used to illustrate how to use the new code in the lavaanPlot package"), node_options = list( fontname = "Helvetica"), edge_options = list(color = "grey"), stars = c("covs"), coef_labels = TRUE)
 
