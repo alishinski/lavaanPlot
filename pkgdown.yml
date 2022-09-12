@@ -1,9 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 2.0.2
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
+  Conditional_Formatting: Conditional_Formatting.html
   Improvements_to_lavaanPlot: Improvements_to_lavaanPlot.html
   Intro_to_lavaanPlot: Intro_to_lavaanPlot.html
   Save_and_embed: Save_and_embed.html
-last_built: 2022-04-14T13:58Z
+last_built: 2022-09-12T16:15Z
 
