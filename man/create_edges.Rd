@@ -19,7 +19,7 @@ create_edges(
 
 \item{ndf}{A node data frame created by \code{create_nodes}}
 
-\item{edge_options}{a named list of graphviz edge attributes}
+\item{edge_options}{a named list of graphviz edge attributes, or a data frame of edge options created by \code{formatting}, or a list of such data frames containing 1 set of edge options and one set of custom options}
 
 \item{coef_labels}{whether to label edges with coefficient values}
 

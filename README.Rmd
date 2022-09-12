@@ -12,7 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## News
 
-The most recent update, version 0.7.0, is introducing a new iteration of the `lavaanPlot` function, called `lavaanPlot2`. Check out a new vignette explaining some of the changes here: [Improvements to lavaanPlot](https://lavaanplot.alexlishinski.com/improvements_to_lavaanplot)
+Version 0.7.0, is introducing a new iteration of the `lavaanPlot` function, called `lavaanPlot2`. Check out a new vignette explaining some of the changes here: [Improvements to lavaanPlot](https://lavaanplot.alexlishinski.com/improvements_to_lavaanplot)
+
+Version 0.8.0, is introducing conditional formatting to the `lavaanPlot` package, using the new `formatting` function. Check out the new vignette explaining the changes here: [Conditional Formatting in LavaanPlot](https://lavaanplot.alexlishinski.com/Conditional_Formatting)
 
 ## Background
 

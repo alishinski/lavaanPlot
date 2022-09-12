@@ -1,8 +1,8 @@
 ## ----setup, include = FALSE---------------------------------------------------
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+# knitr::opts_chunk$set(
+#   collapse = TRUE,
+#   comment = "#>"
+# )
 
 ## -----------------------------------------------------------------------------
 library(lavaan)
@@ -23,7 +23,6 @@ fit2 <- cfa(HS.model, data=HolzingerSwineford1939)
 summary(fit2)
 
 labels2 = c(visual = "Visual Ability", textual = "Textual Ability", speed = "Speed Ability")
-
 
 ## -----------------------------------------------------------------------------
 lavaanPlot2(fit)

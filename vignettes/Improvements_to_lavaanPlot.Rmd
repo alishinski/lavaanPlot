@@ -10,10 +10,10 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+# knitr::opts_chunk$set(
+#   collapse = TRUE,
+#   comment = "#>"
+# )
 ```
 
 I've been working on some improvements to the lavaanPlot package, in order to take advantage of updates to the diagrammeR package.
@@ -45,7 +45,6 @@ fit2 <- cfa(HS.model, data=HolzingerSwineford1939)
 summary(fit2)
 
 labels2 = c(visual = "Visual Ability", textual = "Textual Ability", speed = "Speed Ability")
-
 ```
 
 You can still plot the model using no additional options:

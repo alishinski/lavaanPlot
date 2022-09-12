@@ -55,3 +55,7 @@
 # lavaanPlot 0.7.0
 
 * Introducing `lavaanPlot2` function, which replicates the old functionality in a more flexible platform
+
+# lavaanPlot 0.8.0
+
+* Introducing conditional formatting which allows one to apply different formatting to different sets of nodes and edges

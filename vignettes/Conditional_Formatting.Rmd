@@ -1,0 +1,121 @@
+---
+title: "Conditional Formatting"
+author: "Alex Lishinski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Conditional Formatting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(lavaanPlot)
+library(lavaan)
+```
+
+As a part of the new improvements to the package, a feature that I've long wanted to add was conditional formatting. By conditional formatitng, I mean formatting different parts of the plot differently, like perhaps changing the shape of only latent variable nodes, or changing the color of covariance edges separately from latent variable or regression edges. Well, I'm pleased to introduce this functionality into the package for version 0.8.0!!
+
+## Conditional formatting in LavaanPlot
+
+Conditional formatting means applying different node or edge options to different groups of nodes or edges respectively. For the context of structural equation models there are some natural groupings of nodes and edges. For nodes it is often helpful to distinguish latent from observed values, and for edges it is often helpful to distinguish regression, latent, and covariance relationships.
+
+The way that I have implemented conditional formatting in `lavaanPlot` involves a new helper function called `formatting`. In the old version of the package, for both the original `lavaanPlot` and the new `lavaanPlot2`, formatting options were specified through the `node_options` and `edge_options` argument (through the `graph_options` argument too, but I won't discuss that here because it doesn't lend itself to conditional formatting). You would specify a named list of attribute-value pairs for these arguments to give your formatting choices, and these would apply to the whole graph. Not anymore.
+
+Now with the `formatting` helper function you can create sets of node and edge attributes for specific parts of the graph. You can do this for the natural groupings of nodes and edges mentioned below, and you can also do it for custom groupings of edges.
+
+## `formatting` function
+
+The `formatting` function works as follows. You supply lists of formatting you want to apply to the portions of the graph, and you pass the resulting list to `lavaanPlot2`.
+
+There are a few main scenarios to think about.
+
+Here's a good example latent variable model:
+
+```{r}
+HS.model <- ' visual  =~ x1 + x2 + x3
+textual =~ x4 + x5 + x6
+speed   =~ x7 + x8 + x9
+'
+
+fit2 <- cfa(HS.model, data=HolzingerSwineford1939)
+summary(fit2)
+labels2 = c(visual = "Visual Ability", textual = "Textual Ability", speed = "Speed Ability")
+```
+
+And here's the old way of doing things without conditional formatting:
+
+```{r}
+lavaanPlot2(fit2, include = "covs", labels = labels2,
+            graph_options = list(label = "my first graph with signficance stars"),
+            node_options = list( fontname = "Helvetica"),
+            edge_options = list(color = "grey"),
+            stars = c("latent"),
+            coef_labels = TRUE)
+
+```
+
+### Contitional formatting for nodes
+
+Now here's an example where we're separately customizing the formatting of the latent and observed variable nodes. The `formatting` function creates our differentiated formatting, and we specify that we're doing node formatting, so it then receives our formatting lists in order of latent, followed by observed variables.
+
+```{r}
+n_opts <- formatting(list(shape = "polygon", sides = "6", color = "orange"), list(shape = "polygon", sides = "8",color = "blue"), type = "node")
+
+lavaanPlot2(fit2, include = "covs", labels = labels2,
+            graph_options = list(label = "my first graph with signficance stars"),
+            node_options = n_opts,
+            edge_options = list(color = "grey"),
+            stars = c("latent"),
+            coef_labels = TRUE)
+```
+
+### Conditional formatting for edges
+
+Here's an example with the node formatting, along with some differentiated edge formatting for the regression, latent, covariance groups.
+
+```{r}
+e_opts <- formatting(list(color = "orange"),list(color = "red", penwidth = 6), list(color = "blue"), type = "edge")
+
+lavaanPlot2(fit2, include = "covs", labels = labels2,
+            graph_options = list(label = "my first graph with signficance stars"),
+            node_options = n_opts,
+            edge_options = e_opts,
+            stars = c("latent"),
+            coef_labels = TRUE)
+```
+
+
+### Conditional formatting for Custom sets of edges
+
+And finally we can add on another layer of edge formatting, on top of the standard groupings of edges used above, with our own custom selected edges, by specifying parameter labels in the model specification. To add labels, simply pre-multiply a text string with the name of the variable.
+
+```{r}
+HS.model <- ' visual  =~ A*x1 + x2 + x3
+textual =~ x4 + x5 + B*x6
+speed   =~ x7 + x8 + x9
+'
+
+fit2 <- cfa(HS.model, data=HolzingerSwineford1939)
+```
+
+Then we can specify a set of options for the custom parameter labels, and make a list of the two different sets of edge options.
+
+```{r}
+c_opts <- formatting(list(color = "yellow", penwidth = 8), list(color = "blue", penwidth = 10), type = "custom", groups = c("A", "B"))
+
+lavaanPlot2(fit2, include = "covs", labels = labels2,
+            graph_options = list(label = "my first graph with signficance stars"),
+            node_options = n_opts,
+            edge_options = list(e_opts, c_opts),
+            stars = c("latent"),
+            coef_labels = TRUE)
+```
+
+
+

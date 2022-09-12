@@ -12,9 +12,9 @@
 
 <meta name="author" content="Alex Lishinski" />
 
-<meta name="date" content="2022-09-12" />
+<meta name="date" content="2022-09-09" />
 
-<title>Improvements to lavaanPlot</title>
+<title>Conditional Formatting</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1548,205 +1548,186 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Improvements to lavaanPlot</h1>
+<h1 class="title toc-ignore">Conditional Formatting</h1>
 <h4 class="author">Alex Lishinski</h4>
-<h4 class="date">2022-09-12</h4>
+<h4 class="date">2022-09-09</h4>
 
 
 
-<p>I’ve been working on some improvements to the lavaanPlot package, in
-order to take advantage of updates to the diagrammeR package.</p>
-<p>I’ll spare you all the details, but diagrammeR has introduced a way
-of building graph plots using node and edge defining dataframes, which
-enable a more extensible way of customizing plots. I am trying to bring
-the advantages of this flexibility to the <code>lavaanPlot</code>
-package to enable more customization. The old way that the package was
-set up is solid, but it’s difficult to add new features, and the goal of
-the new approach is to unlock the full customization options that the
-graphViz software and the DOT language have to offer.</p>
-<p>I’ve tried to keep things from the old approach to the extent that I
-could, but there are some new elements of the user interface for this
-new version of the package. I’m not finished with everything I set out
-to accomplish yet, but I’m writing this vignette to introduce the new
-version of the package so people can give it a try and find issues that
-I can fix. I’m releasing this as version 0.7.0, with the goal of fixing
-issues and fully fleshing out the functionality that I’d like the
-package to have over a couple more iterations of the package to get
-ready for a fully matured 1.0.0 release, where hopefully then I can
-fully deprecate the old code.</p>
-<p>Here are some examples with the new code, the function being called
-<code>lavaanPlot2</code>.</p>
-<p>Starting with a basic model using <code>mtcars</code> which only
-contains observed variable relationships and no latent variable
-relationships.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span></code></pre></div>
-<pre><code>## This is lavaan 0.6-11
-## lavaan is FREE software! Please report any bugs.</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaanPlot)</span>
+<p>As a part of the new improvements to the package, a feature that I’ve
+long wanted to add was conditional formatting. By conditional
+formatitng, I mean formatting different parts of the plot differently,
+like perhaps changing the shape of only latent variable nodes, or
+changing the color of covariance edges separately from latent variable
+or regression edges. Well, I’m pleased to introduce this functionality
+into the package for version 0.8.0!!</p>
+<div id="conditional-formatting-in-lavaanplot" class="section level2">
+<h2>Conditional formatting in LavaanPlot</h2>
+<p>Conditional formatting means applying different node or edge options
+to different groups of nodes or edges respectively. For the context of
+structural equation models there are some natural groupings of nodes and
+edges. For nodes it is often helpful to distinguish latent from observed
+values, and for edges it is often helpful to distinguish regression,
+latent, and covariance relationships.</p>
+<p>The way that I have implemented conditional formatting in
+<code>lavaanPlot</code> involves a new helper function called
+<code>formatting</code>. In the old version of the package, for both the
+original <code>lavaanPlot</code> and the new <code>lavaanPlot2</code>,
+formatting options were specified through the <code>node_options</code>
+and <code>edge_options</code> argument (through the
+<code>graph_options</code> argument too, but I won’t discuss that here
+because it doesn’t lend itself to conditional formatting). You would
+specify a named list of attribute-value pairs for these arguments to
+give your formatting choices, and these would apply to the whole graph.
+Not anymore.</p>
+<p>Now with the <code>formatting</code> helper function you can create
+sets of node and edge attributes for specific parts of the graph. You
+can do this for the natural groupings of nodes and edges mentioned
+below, and you can also do it for custom groupings of edges.</p>
+</div>
+<div id="formatting-function" class="section level2">
+<h2><code>formatting</code> function</h2>
+<p>The <code>formatting</code> function works as follows. You supply
+lists of formatting you want to apply to the portions of the graph, and
+you pass the resulting list to <code>lavaanPlot2</code>.</p>
+<p>There are a few main scenarios to think about.</p>
+<p>Here’s a good example latent variable model:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>HS.model <span class="ot">&lt;-</span> <span class="st">&#39; visual  =~ x1 + x2 + x3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">textual =~ x4 + x5 + x6</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">speed   =~ x7 + x8 + x9</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">cfa</span>(HS.model, <span class="at">data=</span>HolzingerSwineford1939)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lavaan 0.6-11 ended normally after 35 iterations</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Estimator                                         ML</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Number of model parameters                        21</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                       </span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Number of observations                           301</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                       </span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model Test User Model:</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                       </span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Test statistic                                85.306</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Degrees of freedom                                24</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   P-value (Chi-square)                           0.000</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Parameter Estimates:</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Standard errors                             Standard</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Information                                 Expected</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Information saturated (h1) model          Structured</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Latent Variables:</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    Estimate  Std.Err  z-value  P(&gt;|z|)</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   visual =~                                           </span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x1                1.000                           </span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x2                0.554    0.100    5.554    0.000</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x3                0.729    0.109    6.685    0.000</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   textual =~                                          </span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x4                1.000                           </span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x5                1.113    0.065   17.014    0.000</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x6                0.926    0.055   16.703    0.000</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   speed =~                                            </span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x7                1.000                           </span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x8                1.180    0.165    7.152    0.000</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     x9                1.082    0.151    7.155    0.000</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Covariances:</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    Estimate  Std.Err  z-value  P(&gt;|z|)</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   visual ~~                                           </span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     textual           0.408    0.074    5.552    0.000</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     speed             0.262    0.056    4.660    0.000</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   textual ~~                                          </span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     speed             0.173    0.049    3.518    0.000</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Variances:</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    Estimate  Std.Err  z-value  P(&gt;|z|)</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x1                0.549    0.114    4.833    0.000</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x2                1.134    0.102   11.146    0.000</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x3                0.844    0.091    9.317    0.000</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x4                0.371    0.048    7.779    0.000</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x5                0.446    0.058    7.642    0.000</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x6                0.356    0.043    8.277    0.000</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x7                0.799    0.081    9.823    0.000</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x8                0.488    0.074    6.573    0.000</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .x9                0.566    0.071    8.003    0.000</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     visual            0.809    0.145    5.564    0.000</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     textual           0.979    0.112    8.737    0.000</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     speed             0.384    0.086    4.451    0.000</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>labels2 <span class="ot">=</span> <span class="fu">c</span>(<span class="at">visual =</span> <span class="st">&quot;Visual Ability&quot;</span>, <span class="at">textual =</span> <span class="st">&quot;Textual Ability&quot;</span>, <span class="at">speed =</span> <span class="st">&quot;Speed Ability&quot;</span>)</span></code></pre></div>
+<p>And here’s the old way of doing things without conditional
+formatting:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit2, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels2,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph with signficance stars&quot;</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-2b04690ce8f9703295df" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2b04690ce8f9703295df">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Textual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Speed Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"4\" [label = \"x1\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"x2\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"x3\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"7\" [label = \"x4\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"8\" [label = \"x5\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"9\" [label = \"x6\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"10\" [label = \"x7\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"11\" [label = \"x8\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"12\" [label = \"x9\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="contitional-formatting-for-nodes" class="section level3">
+<h3>Contitional formatting for nodes</h3>
+<p>Now here’s an example where we’re separately customizing the
+formatting of the latent and observed variable nodes. The
+<code>formatting</code> function creates our differentiated formatting,
+and we specify that we’re doing node formatting, so it then receives our
+formatting lists in order of latent, followed by observed variables.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_opts <span class="ot">&lt;-</span> <span class="fu">formatting</span>(<span class="fu">list</span>(<span class="at">shape =</span> <span class="st">&quot;polygon&quot;</span>, <span class="at">sides =</span> <span class="st">&quot;6&quot;</span>, <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>), <span class="fu">list</span>(<span class="at">shape =</span> <span class="st">&quot;polygon&quot;</span>, <span class="at">sides =</span> <span class="st">&quot;8&quot;</span>,<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>), <span class="at">type =</span> <span class="st">&quot;node&quot;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="st">&#39;mpg ~ cyl + disp + hp</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">          qsec ~ disp + hp + wt&#39;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(model, <span class="at">data =</span> mtcars)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
-<pre><code>## lavaan 0.6-11 ended normally after 32 iterations
-## 
-##   Estimator                                         ML
-##   Optimization method                           NLMINB
-##   Number of model parameters                         9
-##                                                       
-##   Number of observations                            32
-##                                                       
-## Model Test User Model:
-##                                                       
-##   Test statistic                                18.266
-##   Degrees of freedom                                 2
-##   P-value (Chi-square)                           0.000
-## 
-## Parameter Estimates:
-## 
-##   Standard errors                             Standard
-##   Information                                 Expected
-##   Information saturated (h1) model          Structured
-## 
-## Regressions:
-##                    Estimate   Std.Err  z-value  P(&gt;|z|)
-##   mpg ~                                                
-##     cyl               -0.987    0.738   -1.337    0.181
-##     disp              -0.021    0.010   -2.178    0.029
-##     hp                -0.017    0.014   -1.218    0.223
-##   qsec ~                                               
-##     disp              -0.008    0.004   -2.122    0.034
-##     hp                -0.023    0.004   -5.229    0.000
-##     wt                 1.695    0.398    4.256    0.000
-## 
-## Covariances:
-##                    Estimate   Std.Err  z-value  P(&gt;|z|)
-##  .mpg ~~                                               
-##    .qsec               0.447    0.511    0.874    0.382
-## 
-## Variances:
-##                    Estimate   Std.Err  z-value  P(&gt;|z|)
-##    .mpg                8.194    2.049    4.000    0.000
-##    .qsec               0.996    0.249    4.000    0.000</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>HS.model <span class="ot">&lt;-</span> <span class="st">&#39; visual  =~ x1 + x2 + x3      </span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">textual =~ x4 + x5 + x6</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">speed   =~ x7 + x8 + x9 </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit2, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels2,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph with signficance stars&quot;</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">node_options =</span> n_opts,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-d6d521d34fc1866ef442" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d6d521d34fc1866ef442">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="conditional-formatting-for-edges" class="section level3">
+<h3>Conditional formatting for edges</h3>
+<p>Here’s an example with the node formatting, along with some
+differentiated edge formatting for the regression, latent, covariance
+groups.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>e_opts <span class="ot">&lt;-</span> <span class="fu">formatting</span>(<span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;orange&quot;</span>),<span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">penwidth =</span> <span class="dv">6</span>), <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>), <span class="at">type =</span> <span class="st">&quot;edge&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit2, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels2,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph with signficance stars&quot;</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">node_options =</span> n_opts,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> e_opts,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-1fdc9efc1512bbc1a952" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1fdc9efc1512bbc1a952">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"red\", penwidth = \"6\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"red\", penwidth = \"6\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"red\", penwidth = \"6\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"red\", penwidth = \"6\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"red\", penwidth = \"6\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"red\", penwidth = \"6\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"blue\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"blue\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"blue\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="conditional-formatting-for-custom-sets-of-edges" class="section level3">
+<h3>Conditional formatting for Custom sets of edges</h3>
+<p>And finally we can add on another layer of edge formatting, on top of
+the standard groupings of edges used above, with our own custom selected
+edges, by specifying parameter labels in the model specification. To add
+labels, simply pre-multiply a text string with the name of the
+variable.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>HS.model <span class="ot">&lt;-</span> <span class="st">&#39; visual  =~ A*x1 + x2 + x3</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">textual =~ x4 + x5 + B*x6</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">speed   =~ x7 + x8 + x9</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">cfa</span>(HS.model, <span class="at">data=</span>HolzingerSwineford1939)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span></code></pre></div>
-<pre><code>## lavaan 0.6-11 ended normally after 35 iterations
-## 
-##   Estimator                                         ML
-##   Optimization method                           NLMINB
-##   Number of model parameters                        21
-##                                                       
-##   Number of observations                           301
-##                                                       
-## Model Test User Model:
-##                                                       
-##   Test statistic                                85.306
-##   Degrees of freedom                                24
-##   P-value (Chi-square)                           0.000
-## 
-## Parameter Estimates:
-## 
-##   Standard errors                             Standard
-##   Information                                 Expected
-##   Information saturated (h1) model          Structured
-## 
-## Latent Variables:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##   visual =~                                           
-##     x1                1.000                           
-##     x2                0.554    0.100    5.554    0.000
-##     x3                0.729    0.109    6.685    0.000
-##   textual =~                                          
-##     x4                1.000                           
-##     x5                1.113    0.065   17.014    0.000
-##     x6                0.926    0.055   16.703    0.000
-##   speed =~                                            
-##     x7                1.000                           
-##     x8                1.180    0.165    7.152    0.000
-##     x9                1.082    0.151    7.155    0.000
-## 
-## Covariances:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##   visual ~~                                           
-##     textual           0.408    0.074    5.552    0.000
-##     speed             0.262    0.056    4.660    0.000
-##   textual ~~                                          
-##     speed             0.173    0.049    3.518    0.000
-## 
-## Variances:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##    .x1                0.549    0.114    4.833    0.000
-##    .x2                1.134    0.102   11.146    0.000
-##    .x3                0.844    0.091    9.317    0.000
-##    .x4                0.371    0.048    7.779    0.000
-##    .x5                0.446    0.058    7.642    0.000
-##    .x6                0.356    0.043    8.277    0.000
-##    .x7                0.799    0.081    9.823    0.000
-##    .x8                0.488    0.074    6.573    0.000
-##    .x9                0.566    0.071    8.003    0.000
-##     visual            0.809    0.145    5.564    0.000
-##     textual           0.979    0.112    8.737    0.000
-##     speed             0.384    0.086    4.451    0.000</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labels2 <span class="ot">=</span> <span class="fu">c</span>(<span class="at">visual =</span> <span class="st">&quot;Visual Ability&quot;</span>, <span class="at">textual =</span> <span class="st">&quot;Textual Ability&quot;</span>, <span class="at">speed =</span> <span class="st">&quot;Speed Ability&quot;</span>)</span></code></pre></div>
-<p>You can still plot the model using no additional options:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit)</span></code></pre></div>
-<div id="htmlwidget-2e1a51fc74de0f7e30a2" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2e1a51fc74de0f7e30a2">{"x":{"diagram":"digraph {\n\n\n\n\n  \"1\" [label = \"mpg\", shape = \"box\", group = \"obs\"] \n  \"2\" [label = \"qsec\", shape = \"box\", group = \"obs\"] \n  \"3\" [label = \"cyl\", shape = \"box\", group = \"obs\"] \n  \"4\" [label = \"disp\", shape = \"box\", group = \"obs\"] \n  \"5\" [label = \"hp\", shape = \"box\", group = \"obs\"] \n  \"6\" [label = \"wt\", shape = \"box\", group = \"obs\"] \n\"3\"->\"1\" [dir = \"forward\"] \n\"4\"->\"1\" [dir = \"forward\"] \n\"5\"->\"1\" [dir = \"forward\"] \n\"4\"->\"2\" [dir = \"forward\"] \n\"5\"->\"2\" [dir = \"forward\"] \n\"6\"->\"2\" [dir = \"forward\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>You can still add labels to the plot with the <code>labels</code>
-argument, although it now uses a named character vector instead of a
-list:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">mpg =</span> <span class="st">&quot;Miles Per Gallon&quot;</span>, <span class="at">cyl =</span> <span class="st">&quot;Cylinders&quot;</span>, <span class="at">disp =</span> <span class="st">&quot;Displacement&quot;</span>, <span class="at">hp =</span> <span class="st">&quot;Horsepower&quot;</span>, <span class="at">qsec =</span> <span class="st">&quot;Speed&quot;</span>, <span class="at">wt =</span> <span class="st">&quot;Weight&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit, <span class="at">labels =</span> labels)</span></code></pre></div>
-<div id="htmlwidget-fc71bf04bfd796e9edf6" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fc71bf04bfd796e9edf6">{"x":{"diagram":"digraph {\n\n\n\n\n  \"1\" [label = \"Miles Per Gallon\", shape = \"box\", group = \"obs\"] \n  \"2\" [label = \"Speed\", shape = \"box\", group = \"obs\"] \n  \"3\" [label = \"Cylinders\", shape = \"box\", group = \"obs\"] \n  \"4\" [label = \"Displacement\", shape = \"box\", group = \"obs\"] \n  \"5\" [label = \"Horsepower\", shape = \"box\", group = \"obs\"] \n  \"6\" [label = \"Weight\", shape = \"box\", group = \"obs\"] \n\"3\"->\"1\" [dir = \"forward\"] \n\"4\"->\"1\" [dir = \"forward\"] \n\"5\"->\"1\" [dir = \"forward\"] \n\"4\"->\"2\" [dir = \"forward\"] \n\"5\"->\"2\" [dir = \"forward\"] \n\"6\"->\"2\" [dir = \"forward\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>Graph options, node options, and edge options are supplied via named
-lists, as previously:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit, <span class="at">labels =</span> labels, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph&quot;</span>, <span class="at">rankdir =</span> <span class="st">&quot;LR&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>))</span></code></pre></div>
-<div id="htmlwidget-f5b72cc43d73e6802589" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f5b72cc43d73e6802589">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph\",\n       rankdir = \"LR\"]\n\n\n\n  \"1\" [label = \"Miles Per Gallon\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Speed\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Cylinders\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"4\" [label = \"Displacement\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"Horsepower\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"Weight\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"3\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"4\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"4\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"5\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"6\"->\"2\" [dir = \"forward\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>A change to the interface is how one can indicate which model paths
-to include in the plot, using the <code>include</code> argument. The
-default option will include just regression and latent variable
-relationships, <code>include = covs</code> will include model
-covariances, whereas <code>include = all</code> will also include error
-variances.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;Including covariates&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>))</span></code></pre></div>
-<div id="htmlwidget-fbc8be6899f8e230b27f" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fbc8be6899f8e230b27f">{"x":{"diagram":"digraph {\n\ngraph [label = \"Including covariates\"]\n\n\n\n  \"1\" [label = \"Miles Per Gallon\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Speed\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Cylinders\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"4\" [label = \"Displacement\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"Horsepower\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"Weight\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"3\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"4\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"4\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"5\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"6\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", color = \"grey\"] \n\"4\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"5\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"5\"->\"4\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"4\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"5\" [dir = \"both\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit, <span class="at">include =</span> <span class="st">&quot;all&quot;</span>, <span class="at">labels =</span> labels, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;including error variances&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>))</span></code></pre></div>
-<div id="htmlwidget-606e3f96ac21352e1996" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-606e3f96ac21352e1996">{"x":{"diagram":"digraph {\n\ngraph [label = \"including error variances\"]\n\n\n\n  \"1\" [label = \"Miles Per Gallon\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Speed\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Cylinders\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"4\" [label = \"Displacement\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"Horsepower\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"Weight\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"3\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"4\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"forward\", color = \"grey\"] \n\"4\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"5\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"6\"->\"2\" [dir = \"forward\", color = \"grey\"] \n\"1\"->\"1\" [dir = \"both\", color = \"grey\"] \n\"2\"->\"2\" [dir = \"both\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", color = \"grey\"] \n\"3\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"4\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"5\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"3\" [dir = \"both\", color = \"grey\"] \n\"4\"->\"4\" [dir = \"both\", color = \"grey\"] \n\"5\"->\"4\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"4\" [dir = \"both\", color = \"grey\"] \n\"5\"->\"5\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"5\" [dir = \"both\", color = \"grey\"] \n\"6\"->\"6\" [dir = \"both\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>Coefficient labels can still be included on the edges, and
-selectively for the different parts of the plot, using the
-<code>coef_lablels</code> argument:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">coef_labels =</span> <span class="cn">TRUE</span>, <span class="at">labels =</span> labels, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;including coefficient labels&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>(<span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>))</span></code></pre></div>
-<div id="htmlwidget-59b0bf62c17555e50807" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-59b0bf62c17555e50807">{"x":{"diagram":"digraph {\n\ngraph [label = \"including coefficient labels\"]\n\n\n\n  \"1\" [label = \"Miles Per Gallon\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Speed\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Cylinders\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"4\" [label = \"Displacement\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"Horsepower\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"Weight\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"3\"->\"1\" [dir = \"forward\", label = \"-0.99\", color = \"grey\"] \n\"4\"->\"1\" [dir = \"forward\", label = \"-0.02\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"forward\", label = \"-0.02\", color = \"grey\"] \n\"4\"->\"2\" [dir = \"forward\", label = \"-0.01\", color = \"grey\"] \n\"5\"->\"2\" [dir = \"forward\", label = \"-0.02\", color = \"grey\"] \n\"6\"->\"2\" [dir = \"forward\", label = \"1.69\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.45\", color = \"grey\"] \n\"4\"->\"3\" [dir = \"both\", label = \"193.42\", color = \"grey\"] \n\"5\"->\"3\" [dir = \"both\", label = \"98.75\", color = \"grey\"] \n\"6\"->\"3\" [dir = \"both\", label = \"1.32\", color = \"grey\"] \n\"5\"->\"4\" [dir = \"both\", label = \"6511.12\", color = \"grey\"] \n\"6\"->\"4\" [dir = \"both\", label = \"104.32\", color = \"grey\"] \n\"6\"->\"5\" [dir = \"both\", label = \"42.81\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>And significance stars can be added to these coefficient labels using
-the stars argument, just as with <code>lavaanPlot</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph with significance stars&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>), <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;regress&quot;</span>), <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-28d75d654a3797513a60" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-28d75d654a3797513a60">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with significance stars\"]\n\n\n\n  \"1\" [label = \"Miles Per Gallon\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Speed\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Cylinders\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"4\" [label = \"Displacement\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"Horsepower\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"Weight\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"3\"->\"1\" [dir = \"forward\", label = \"-0.99\", color = \"grey\"] \n\"4\"->\"1\" [dir = \"forward\", label = \"-0.02*\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"forward\", label = \"-0.02\", color = \"grey\"] \n\"4\"->\"2\" [dir = \"forward\", label = \"-0.01*\", color = \"grey\"] \n\"5\"->\"2\" [dir = \"forward\", label = \"-0.02***\", color = \"grey\"] \n\"6\"->\"2\" [dir = \"forward\", label = \"1.69***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.45\", color = \"grey\"] \n\"4\"->\"3\" [dir = \"both\", label = \"193.42\", color = \"grey\"] \n\"5\"->\"3\" [dir = \"both\", label = \"98.75\", color = \"grey\"] \n\"6\"->\"3\" [dir = \"both\", label = \"1.32\", color = \"grey\"] \n\"5\"->\"4\" [dir = \"both\", label = \"6511.12\", color = \"grey\"] \n\"6\"->\"4\" [dir = \"both\", label = \"104.32\", color = \"grey\"] \n\"6\"->\"5\" [dir = \"both\", label = \"42.81\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit2, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels2, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph with signficance stars&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>), <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>), <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-d139f730b830be5094ef" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d139f730b830be5094ef">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Textual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Speed Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"4\" [label = \"x1\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"x2\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"x3\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"7\" [label = \"x4\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"8\" [label = \"x5\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"9\" [label = \"x6\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"10\" [label = \"x7\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"11\" [label = \"x8\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"12\" [label = \"x9\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit2, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels2, <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph, which is being used to illustrate how to use the new code in the lavaanPlot package&quot;</span>), <span class="at">node_options =</span> <span class="fu">list</span>( <span class="at">fontname =</span> <span class="st">&quot;Helvetica&quot;</span>), <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>), <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;covs&quot;</span>), <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-bffa2d7295236370499f" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bffa2d7295236370499f">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph, which is being used to illustrate how to use the new code in the lavaanPlot package\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Textual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Speed Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"4\" [label = \"x1\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"x2\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"x3\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"7\" [label = \"x4\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"8\" [label = \"x5\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"9\" [label = \"x6\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"10\" [label = \"x7\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"11\" [label = \"x8\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"12\" [label = \"x9\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41***\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26***\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17***\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>The next stage of development is to allow for subset formatting,
-where different formatting is applied to sets of nodes or edges. The
-most obvious cases for this are to allow different formatting for the
-sets of latent vs observed nodes, and the regression, latent,
-covariance, and error variance edges. Ideally though I want to enable
-users to be able to apply different formatting to arbitrary subsets of
-nodes or edges as they see fit.</p>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">cfa</span>(HS.model, <span class="at">data=</span>HolzingerSwineford1939)</span></code></pre></div>
+<p>Then we can specify a set of options for the custom parameter labels,
+and make a list of the two different sets of edge options.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>c_opts <span class="ot">&lt;-</span> <span class="fu">formatting</span>(<span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;yellow&quot;</span>, <span class="at">penwidth =</span> <span class="dv">8</span>), <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">penwidth =</span> <span class="dv">10</span>), <span class="at">type =</span> <span class="st">&quot;custom&quot;</span>, <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot2</span>(fit2, <span class="at">include =</span> <span class="st">&quot;covs&quot;</span>, <span class="at">labels =</span> labels2,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">graph_options =</span> <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;my first graph with signficance stars&quot;</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">node_options =</span> n_opts,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> <span class="fu">list</span>(e_opts, c_opts),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-06a88d84f8d1c64008bd" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-06a88d84f8d1c64008bd">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"yellow\", penwidth = \"8\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"red\", penwidth = \"6\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"red\", penwidth = \"6\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"red\", penwidth = \"6\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"blue\", penwidth = \"10\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"red\", penwidth = \"6\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"red\", penwidth = \"6\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"blue\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"blue\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"blue\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
 
 
 

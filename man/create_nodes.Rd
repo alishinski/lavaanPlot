@@ -11,7 +11,7 @@ create_nodes(coefs, labels = NULL, node_options)
 
 \item{labels}{An optional list of labels}
 
-\item{node_options}{a named list of graphviz node attributes}
+\item{node_options}{a named list of graphviz node attributes, or a data frame of node options created by \code{formatting},}
 }
 \value{
 an edge data frame

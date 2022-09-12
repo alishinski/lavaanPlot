@@ -9,7 +9,7 @@ extract_coefs(model, include = NULL, stand = FALSE)
 \arguments{
 \item{model}{A fitted model of class lavaan}
 
-\item{include}{which parameters to include in the plot. Default is all regression and latent relationships. "covs" will also include covariances, while "all will also include error variances.}
+\item{include}{which parameters to include in the plot. Default is all regression and latent relationships. "covs" will also include covariances, while "all" will also include error variances.}
 
 \item{stand}{Should the coefficients being used be standardized coefficients}
 }
