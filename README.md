@@ -6,10 +6,15 @@ status](https://www.r-pkg.org/badges/version/lavaanPlot)](https://cran.r-project
 
 ## News
 
-The most recent update, version 0.7.0, is introducing a new iteration of
-the `lavaanPlot` function, called `lavaanPlot2`. Check out a new
-vignette explaining some of the changes here: [Improvements to
-lavaanPlot](https://lavaanplot.alexlishinski.com/articles/improvements_to_lavaanplot)
+Version 0.7.0, is introducing a new iteration of the `lavaanPlot`
+function, called `lavaanPlot2`. Check out a new vignette explaining some
+of the changes here: [Improvements to
+lavaanPlot](https://lavaanplot.alexlishinski.com/improvements_to_lavaanplot)
+
+Version 0.8.0, is introducing conditional formatting to the `lavaanPlot`
+package, using the new `formatting` function. Check out the new vignette
+explaining the changes here: [Conditional Formatting in
+LavaanPlot](https://lavaanplot.alexlishinski.com/Conditional_Formatting)
 
 ## Background
 
@@ -51,7 +56,7 @@ regression relationships and latent variable - indicator relationships.
 library(lavaan)
 ```
 
-    ## This is lavaan 0.6-10
+    ## This is lavaan 0.6-11
     ## lavaan is FREE software! Please report any bugs.
 
 ``` r
@@ -64,7 +69,7 @@ fit <- sem(model, data = mtcars)
 summary(fit)
 ```
 
-    ## lavaan 0.6-10 ended normally after 32 iterations
+    ## lavaan 0.6-11 ended normally after 32 iterations
     ## 
     ##   Estimator                                         ML
     ##   Optimization method                           NLMINB
@@ -112,7 +117,8 @@ specifying your desired graph parameters.
 lavaanPlot(model = fit, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = F)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<div id="htmlwidget-8f7e74db38ea52a7f83d" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8f7e74db38ea52a7f83d">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box, fontname = Helvetica ] \n node [shape = box] \n cyl; disp; hp; wt; mpg; qsec \n node [shape = oval] \n  \n \n edge [ color = grey ] \n cyl->mpg disp->mpg hp->mpg disp->qsec hp->qsec wt->qsec  \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 There is also functionality to save these plots as images and embed them
 in pdf output documents.

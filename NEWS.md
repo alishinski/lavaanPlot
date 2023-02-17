@@ -59,3 +59,7 @@
 # lavaanPlot 0.8.0
 
 * Introducing conditional formatting which allows one to apply different formatting to different sets of nodes and edges
+
+# lavaanPlot 0.8.1
+
+* Fixed bug with the standardized coefficents in `lavaanPlot2`

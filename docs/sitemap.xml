@@ -4,6 +4,9 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/Conditional_Formatting.html</loc>
+  </url>
+  <url>
     <loc>/articles/Improvements_to_lavaanPlot.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>/reference/extract_coefs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/formatting.html</loc>
   </url>
   <url>
     <loc>/reference/getNodes.html</loc>

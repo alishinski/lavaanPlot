@@ -16,6 +16,8 @@ extract_coefs <- function(model, include = NULL, stand = FALSE) {
       dplyr::mutate(p_val = (1 - stats::pnorm(abs(.data$z))) * 2)
   }
 
+  par_table$p_val[is.na(par_table$p_val)] <- 1
+
   par_table <- par_table %>%
     dplyr::mutate(stars = map(.data$p_val, sig_stars))
 
@@ -219,6 +221,7 @@ create_edges <- function(coefs, ndf, edge_options, coef_labels = FALSE, stand = 
 #'
 #' @param pvals a vector of p values
 sig_stars <- function(pvals){
+
   if(pvals <= 0.001){
     star = "***"
   } else if (pvals <= 0.01){

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Alex Lishinski" />
 
-<meta name="date" content="2022-09-12" />
+<meta name="date" content="2023-02-17" />
 
 <title>Conditional Formatting</title>
 
@@ -1247,23 +1247,23 @@ color: #333333;
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -1281,55 +1281,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -1550,13 +1549,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Conditional Formatting</h1>
 <h4 class="author">Alex Lishinski</h4>
-<h4 class="date">2022-09-12</h4>
+<h4 class="date">2023-02-17</h4>
 
 
 
 <p>As a part of the new improvements to the package, a feature that I’ve
 long wanted to add was conditional formatting. By conditional
-formatitng, I mean formatting different parts of the plot differently,
+formatting, I mean formatting different parts of the plot differently,
 like perhaps changing the shape of only latent variable nodes, or
 changing the color of covariance edges separately from latent variable
 or regression edges. Well, I’m pleased to introduce this functionality
@@ -1665,8 +1664,8 @@ formatting:</p>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>),</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-6e36fb5c7c5e562e082f" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6e36fb5c7c5e562e082f">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Textual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Speed Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"4\" [label = \"x1\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"x2\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"x3\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"7\" [label = \"x4\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"8\" [label = \"x5\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"9\" [label = \"x6\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"10\" [label = \"x7\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"11\" [label = \"x8\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"12\" [label = \"x9\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-eead36b494f8dee9aabe" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-eead36b494f8dee9aabe">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"2\" [label = \"Textual Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"3\" [label = \"Speed Ability\", shape = \"oval\", group = \"latent\", fontname = \"Helvetica\"] \n  \"4\" [label = \"x1\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"5\" [label = \"x2\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"6\" [label = \"x3\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"7\" [label = \"x4\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"8\" [label = \"x5\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"9\" [label = \"x6\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"10\" [label = \"x7\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"11\" [label = \"x8\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n  \"12\" [label = \"x9\", shape = \"box\", group = \"obs\", fontname = \"Helvetica\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <div id="contitional-formatting-for-nodes" class="section level3">
 <h3>Contitional formatting for nodes</h3>
 <p>Now here’s an example where we’re separately customizing the
@@ -1682,8 +1681,8 @@ formatting lists in order of latent, followed by observed variables.</p>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>),</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-fabd20046e779de8b5cc" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fabd20046e779de8b5cc">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-98e16b1f924f8b2f6dc1" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-98e16b1f924f8b2f6dc1">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"grey\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"grey\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"grey\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"grey\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"grey\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"grey\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"grey\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"grey\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"grey\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"grey\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="conditional-formatting-for-edges" class="section level3">
 <h3>Conditional formatting for edges</h3>
@@ -1698,8 +1697,8 @@ groups.</p>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> e_opts,</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-9df668b96c5a836a2d3e" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9df668b96c5a836a2d3e">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"red\", penwidth = \"6\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"red\", penwidth = \"6\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"red\", penwidth = \"6\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"red\", penwidth = \"6\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"red\", penwidth = \"6\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"red\", penwidth = \"6\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"blue\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"blue\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"blue\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f17b0fe72709691376a7" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f17b0fe72709691376a7">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"red\", penwidth = \"6\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"red\", penwidth = \"6\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"red\", penwidth = \"6\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"red\", penwidth = \"6\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"red\", penwidth = \"6\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"red\", penwidth = \"6\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"blue\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"blue\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"blue\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="conditional-formatting-for-custom-sets-of-edges" class="section level3">
 <h3>Conditional formatting for Custom sets of edges</h3>
@@ -1724,8 +1723,8 @@ and make a list of the two different sets of edge options.</p>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">edge_options =</span> <span class="fu">list</span>(e_opts, c_opts),</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stars =</span> <span class="fu">c</span>(<span class="st">&quot;latent&quot;</span>),</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">coef_labels =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div id="htmlwidget-63dc703e8615b368356c" style="width:288px;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-63dc703e8615b368356c">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"yellow\", penwidth = \"8\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"red\", penwidth = \"6\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"red\", penwidth = \"6\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"red\", penwidth = \"6\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"blue\", penwidth = \"10\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"red\", penwidth = \"6\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"red\", penwidth = \"6\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"blue\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"blue\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"blue\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-db24349e20bcc3d0ca48" style="width:288px;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-db24349e20bcc3d0ca48">{"x":{"diagram":"digraph {\n\ngraph [label = \"my first graph with signficance stars\"]\n\n\n\n  \"1\" [label = \"Visual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"2\" [label = \"Textual Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"3\" [label = \"Speed Ability\", group = \"latent\", shape = \"polygon\", sides = \"6\", color = \"orange\"] \n  \"4\" [label = \"x1\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"5\" [label = \"x2\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"6\" [label = \"x3\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"7\" [label = \"x4\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"8\" [label = \"x5\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"9\" [label = \"x6\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"10\" [label = \"x7\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"11\" [label = \"x8\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n  \"12\" [label = \"x9\", group = \"obs\", shape = \"polygon\", sides = \"8\", color = \"blue\"] \n\"4\"->\"1\" [dir = \"back\", label = \"1***\", color = \"yellow\", penwidth = \"8\"] \n\"5\"->\"1\" [dir = \"back\", label = \"0.55***\", color = \"red\", penwidth = \"6\"] \n\"6\"->\"1\" [dir = \"back\", label = \"0.73***\", color = \"red\", penwidth = \"6\"] \n\"7\"->\"2\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"8\"->\"2\" [dir = \"back\", label = \"1.11***\", color = \"red\", penwidth = \"6\"] \n\"9\"->\"2\" [dir = \"back\", label = \"0.93***\", color = \"blue\", penwidth = \"10\"] \n\"10\"->\"3\" [dir = \"back\", label = \"1***\", color = \"red\", penwidth = \"6\"] \n\"11\"->\"3\" [dir = \"back\", label = \"1.18***\", color = \"red\", penwidth = \"6\"] \n\"12\"->\"3\" [dir = \"back\", label = \"1.08***\", color = \"red\", penwidth = \"6\"] \n\"2\"->\"1\" [dir = \"both\", label = \"0.41\", color = \"blue\"] \n\"3\"->\"1\" [dir = \"both\", label = \"0.26\", color = \"blue\"] \n\"3\"->\"2\" [dir = \"both\", label = \"0.17\", color = \"blue\"] \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 

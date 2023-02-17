@@ -19,7 +19,7 @@ library(lavaanPlot)
 library(lavaan)
 ```
 
-As a part of the new improvements to the package, a feature that I've long wanted to add was conditional formatting. By conditional formatitng, I mean formatting different parts of the plot differently, like perhaps changing the shape of only latent variable nodes, or changing the color of covariance edges separately from latent variable or regression edges. Well, I'm pleased to introduce this functionality into the package for version 0.8.0!!
+As a part of the new improvements to the package, a feature that I've long wanted to add was conditional formatting. By conditional formatting, I mean formatting different parts of the plot differently, like perhaps changing the shape of only latent variable nodes, or changing the color of covariance edges separately from latent variable or regression edges. Well, I'm pleased to introduce this functionality into the package for version 0.8.0!!
 
 ## Conditional formatting in LavaanPlot
 
