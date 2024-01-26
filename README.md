@@ -6,7 +6,7 @@ status](https://www.r-pkg.org/badges/version/lavaanPlot)](https://cran.r-project
 
 ## News
 
-Version 0.7.0, is introducing a new iteration of the `lavaanPlot`
+Version 0.7.0, introduced a new iteration of the `lavaanPlot`
 function, called `lavaanPlot2`. Check out a new vignette explaining some
 of the changes here: [Improvements to
 lavaanPlot](https://lavaanplot.alexlishinski.com/improvements_to_lavaanplot)
