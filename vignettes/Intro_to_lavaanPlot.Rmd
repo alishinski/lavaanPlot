@@ -17,8 +17,8 @@ The lavaan package is an excellent package for structural equation models, and t
 
 The package is very straightforward to use, simply call the `lavaanPlot` function with your lavaan model, adding whatever graph, node and edge attributes you want as a named list (graph attributes are specified as a standard default value that shows you what the other attribute lists should look like). For your reference, the available attributes can be found here:
 
-http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#node-attributes
-http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#edge-attributes
+https://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#node-attributes
+https://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#edge-attributes
 
 Here's a quick example using the `mtcars` data set. 
 
