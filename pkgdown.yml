@@ -1,10 +1,13 @@
-pandoc: 2.7.3
-pkgdown: 2.0.6
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   Conditional_Formatting: Conditional_Formatting.html
   Improvements_to_lavaanPlot: Improvements_to_lavaanPlot.html
   Intro_to_lavaanPlot: Intro_to_lavaanPlot.html
   Save_and_embed: Save_and_embed.html
-last_built: 2022-09-12T16:15Z
+last_built: 2024-01-26T19:55Z
+urls:
+  reference: http://alexlishinski.com/lavaanPlot/reference
+  article: http://alexlishinski.com/lavaanPlot/articles
 
