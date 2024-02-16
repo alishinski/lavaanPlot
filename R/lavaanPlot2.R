@@ -21,6 +21,8 @@ extract_coefs <- function(model, include = NULL, stand = FALSE) {
   par_table <- par_table %>%
     dplyr::mutate(stars = map(.data$p_val, sig_stars))
 
+  par_table$direct <- ifelse(par_table$est > 0, "pos", "neg")
+
   if (is.null(include)) {
     bind_cols(par_table) %>%
       filter(.data$op == "=~" | .data$op == "~")
@@ -49,6 +51,8 @@ formatting <- function(..., type, groups){
     groups <- c("regress", "latent", "covs")
   } else if (type == "custom") {
     groups <- groups
+  } else if (type == "dir"){
+    groups <- c("pos", "neg")
   }
 
   # check number of groups against the number of inputs
@@ -70,6 +74,8 @@ formatting <- function(..., type, groups){
       attr(format, "type") <- "edge"
     } else if (type == "custom") {
       attr(format, "type") <- "custom"
+    } else if (type == "dir") {
+      attr(format, "type") <- "dir"
     }
     format
 }
@@ -178,7 +184,8 @@ create_edges <- function(coefs, ndf, edge_options, coef_labels = FALSE, stand = 
     regress = regress,
     latent = latent,
     covs = covs,
-    dir = ifelse(coefs$op == "=~", "back", ifelse(coefs$op == "~~", "both", "forward"))
+    dir = ifelse(coefs$op == "=~", "back", ifelse(coefs$op == "~~", "both", "forward")),
+    direct = coefs$direct
   )
 
   if (!is.null(coef_labels)){
@@ -205,7 +212,11 @@ create_edges <- function(coefs, ndf, edge_options, coef_labels = FALSE, stand = 
     join2[,var_names] <- map(var_names, function(x){ifelse(is.na(join2[,x]), join2[,paste(x, "older", sep = "_")], join2[,x])})
     edge_df <- join2
   } else if (is.data.frame(edge_options)) {
-    edge_df <- dplyr::left_join(edge_df, edge_options, by = "group", suffix = c("_orig", ""))
+    if(attr(edge_options, "type") == "dir"){
+      edge_df <- dplyr::left_join(edge_df, edge_options, by = c("direct" = "group"), suffix = c("_orig", ""))
+    } else {
+      edge_df <- dplyr::left_join(edge_df, edge_options, by = "group", suffix = c("_orig", ""))
+    }
   } else if (!is.null(edge_options)) {
     edge_opts <- map_dfc(edge_options, function(x) rep(x, nrow(coefs)))
   }
