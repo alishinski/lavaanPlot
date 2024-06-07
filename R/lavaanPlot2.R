@@ -151,8 +151,9 @@ create_nodes <- function(coefs, labels = NULL, node_options) {
 #' @param stars a character vector indicating which parameters should include significance stars be included for regression paths, latent paths, or covariances. Include which of the 3 you want ("regress", "latent", "covs"), default is none.
 #' @param sig significance level for determining what significant paths are
 #' @return an edge data frame
-#' @importFrom purrr map map_int map_lgl map_dfc pmap_lgl
+#' @importFrom purrr map map_int map_lgl map_dfc pmap_lgl map2
 #' @importFrom dplyr bind_cols
+#' @importFrom stringr str_replace str_detect str_replace_all str_trim
 #' @export
 create_edges <- function(coefs, ndf, edge_options, coef_labels = FALSE, stand = FALSE, stars = NULL, sig = 1.00) {
 
@@ -163,8 +164,21 @@ create_edges <- function(coefs, ndf, edge_options, coef_labels = FALSE, stand = 
   stars_yn <- if(!is.null(stars)) pmap_lgl(map(stars, dynGet), any) else NULL
   coef_vals <- round(coefs$est, digits = 2)
 
+  #new code
+
+  if(!is.numeric(sig)){
+    stop("sig value must be numeric")
+  } else if (sig < 0 | sig > 1) {
+    stop("sig value must be between 0 and 1")
+  }
+
+  sig_test <- coefs$p_val < sig
+  coef_vals <- purrr::map2(sig_test, coef_vals, function(x,y){if (isTRUE(x)){y} else {""}} ) %>% as.character() %>% stringr::str_replace_all("(?<=[:digit:])0", "")
+
   if(coef_labels & !is.null(stars)){
     label = ifelse(stars_yn, paste(coef_vals, coefs$stars, sep = ""), coef_vals)
+    label = ifelse(stringr::str_detect(label, "[:digit:]"), label, stringr::str_replace(label, "(?<![:digit:])\\*+", "")) %>%
+      stringr::str_trim()
   } else if(coef_labels){
     label = coef_vals
   } else {

@@ -1,5 +1,5 @@
 ---
-title: "Improvements to lavaanPlot"
+title: "`lavaanPlot2()` Improvements to lavaanPlot"
 author: "Alex Lishinski"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

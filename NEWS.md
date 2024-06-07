@@ -63,3 +63,7 @@
 # lavaanPlot 0.8.1
 
 * Fixed bug with the standardized coefficents in `lavaanPlot2`
+
+# lavaanPlot 0.8.2
+
+* Added support for different significance thresholds for edge labels
