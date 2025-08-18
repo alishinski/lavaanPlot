@@ -1,78 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/404.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/Conditional_Formatting.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/Improvements_to_lavaanPlot.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/Intro_to_lavaanPlot.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/Save_and_embed.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/authors.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/index.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/news/index.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/buildCall.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/buildLabels.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/buildPaths.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/convert_graph.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/create_edges.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/create_grviz.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/create_nodes.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/embed_plot_pdf.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/extract_coefs.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/formatting.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/getNodes.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/lavaanPlot.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/lavaanPlot2.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/save_png.html</loc>
-  </url>
-  <url>
-    <loc>http://alexlishinski.com/lavaanPlot/reference/sig_stars.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>http://alexlishinski.com/lavaanPlot/404.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/articles/Conditional_Formatting.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/articles/Improvements_to_lavaanPlot.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/articles/Intro_to_lavaanPlot.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/articles/Save_and_embed.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/articles/index.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/authors.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/index.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/news/index.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/buildCall.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/buildLabels.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/buildPaths.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/convert_graph.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/create_edges.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/create_grviz.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/create_nodes.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/embed_plot_pdf.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/extract_coefs.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/formatting.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/getNodes.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/index.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/lavaanPlot.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/lavaanPlot2.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/save_png.html</loc></url>
+<url><loc>http://alexlishinski.com/lavaanPlot/reference/sig_stars.html</loc></url>
 </urlset>
+
