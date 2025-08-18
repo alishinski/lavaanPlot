@@ -9,7 +9,8 @@
 extract_coefs <- function(model, include = NULL, stand = FALSE) {
   if(stand){
     par_table <- lavaan::standardizedSolution(model) %>%
-      dplyr::mutate(p_val = (1 - stats::pnorm(abs(.data$z))) * 2)
+      dplyr::mutate(p_val = (1 - stats::pnorm(abs(.data$z))) * 2) %>%
+      dplyr::mutate(label = "")
   } else {
     par_table <- bind_cols(model@ParTable) %>%
       dplyr::mutate(z = .data$est / .data$se) %>%
